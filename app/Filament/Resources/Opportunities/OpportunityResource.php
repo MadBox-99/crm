@@ -9,16 +9,15 @@ use App\Filament\Resources\Opportunities\Pages\CreateOpportunity;
 use App\Filament\Resources\Opportunities\Pages\EditOpportunity;
 use App\Filament\Resources\Opportunities\Pages\ListOpportunities;
 use App\Models\Opportunity;
-use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
@@ -26,8 +25,6 @@ use UnitEnum;
 final class OpportunityResource extends Resource
 {
     protected static ?string $model = Opportunity::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?int $navigationSort = 10;
 
@@ -37,9 +34,9 @@ final class OpportunityResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('customer_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('customer_id')
+                    ->relationship('customer', 'name')
+                    ->required(),
                 TextInput::make('title')
                     ->required(),
                 Textarea::make('description')

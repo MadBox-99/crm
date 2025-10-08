@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\Role;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
 use App\Models\CustomerAttribute;
@@ -21,13 +22,20 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $this->call([
+            PermissionSeeder::class,
+        ]);
+
         // Create users
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
+
+        $admin->assignRole(Role::Admin);
 
         User::factory(5)->create();
 

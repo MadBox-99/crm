@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum NavigationGroup: string
+use BackedEnum;
+use Filament\Support\Contracts\HasIcon;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Contracts\Support\Htmlable;
+
+enum NavigationGroup: string implements HasIcon, HasLabel
 {
     case Customers = 'Customers';
     case Sales = 'Sales';
@@ -16,22 +21,22 @@ enum NavigationGroup: string
     case Settings = 'Settings';
     case System = 'System';
 
-    public function getLabel(): string
+    public function getLabel(): string|Htmlable|null
     {
         return match ($this) {
-            self::Customers => 'Ügyfelek',
-            self::Sales => 'Értékesítés',
-            self::Products => 'Termékek',
-            self::Marketing => 'Marketing',
-            self::Support => 'Ügyfélszolgálat',
-            self::Communication => 'Kommunikáció',
-            self::Reports => 'Riportok',
-            self::Settings => 'Beállítások',
-            self::System => 'Rendszer',
+            self::Customers => __('Customers'),
+            self::Sales => __('Sales'),
+            self::Products => __('Products'),
+            self::Marketing => __('Marketing'),
+            self::Support => __('Support'),
+            self::Communication => __('Communication'),
+            self::Reports => __('Reports'),
+            self::Settings => __('Settings'),
+            self::System => __('System'),
         };
     }
 
-    public function getIcon(): ?string
+    public function getIcon(): string|BackedEnum|null
     {
         return match ($this) {
             self::Customers => 'heroicon-o-user-group',

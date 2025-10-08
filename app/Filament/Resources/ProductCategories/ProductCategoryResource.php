@@ -9,7 +9,6 @@ use App\Filament\Resources\ProductCategories\Pages\CreateProductCategory;
 use App\Filament\Resources\ProductCategories\Pages\EditProductCategory;
 use App\Filament\Resources\ProductCategories\Pages\ListProductCategories;
 use App\Models\ProductCategory;
-use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -18,7 +17,6 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
@@ -26,8 +24,6 @@ use UnitEnum;
 final class ProductCategoryResource extends Resource
 {
     protected static ?string $model = ProductCategory::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCubeTransparent;
 
     protected static ?int $navigationSort = 5;
 
