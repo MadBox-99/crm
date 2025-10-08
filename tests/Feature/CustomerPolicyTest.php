@@ -7,13 +7,14 @@ use App\Enums\Role as RoleEnum;
 use App\Models\Customer;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
-beforeEach(function () {
+beforeEach(function (): void {
     // Reset cached permissions
-    app()[Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+    app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 });
 
-it('allows users with view_any_customer permission to view any customers', function () {
+it('allows users with view_any_customer permission to view any customers', function (): void {
     $user = User::factory()->create();
     Permission::create(['name' => PermissionEnum::ViewAnyCustomer]);
     $user->givePermissionTo(PermissionEnum::ViewAnyCustomer);
@@ -21,13 +22,13 @@ it('allows users with view_any_customer permission to view any customers', funct
     expect($user->can('viewAny', Customer::class))->toBeTrue();
 });
 
-it('denies users without view_any_customer permission to view any customers', function () {
+it('denies users without view_any_customer permission to view any customers', function (): void {
     $user = User::factory()->create();
 
     expect($user->can('viewAny', Customer::class))->toBeFalse();
 });
 
-it('allows users with view_customer permission to view a customer', function () {
+it('allows users with view_customer permission to view a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
     Permission::create(['name' => PermissionEnum::ViewCustomer]);
@@ -36,14 +37,14 @@ it('allows users with view_customer permission to view a customer', function () 
     expect($user->can('view', $customer))->toBeTrue();
 });
 
-it('denies users without view_customer permission to view a customer', function () {
+it('denies users without view_customer permission to view a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
 
     expect($user->can('view', $customer))->toBeFalse();
 });
 
-it('allows users with create_customer permission to create customers', function () {
+it('allows users with create_customer permission to create customers', function (): void {
     $user = User::factory()->create();
     Permission::create(['name' => PermissionEnum::CreateCustomer]);
     $user->givePermissionTo(PermissionEnum::CreateCustomer);
@@ -51,13 +52,13 @@ it('allows users with create_customer permission to create customers', function 
     expect($user->can('create', Customer::class))->toBeTrue();
 });
 
-it('denies users without create_customer permission to create customers', function () {
+it('denies users without create_customer permission to create customers', function (): void {
     $user = User::factory()->create();
 
     expect($user->can('create', Customer::class))->toBeFalse();
 });
 
-it('allows users with update_customer permission to update a customer', function () {
+it('allows users with update_customer permission to update a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
     Permission::create(['name' => PermissionEnum::UpdateCustomer]);
@@ -66,14 +67,14 @@ it('allows users with update_customer permission to update a customer', function
     expect($user->can('update', $customer))->toBeTrue();
 });
 
-it('denies users without update_customer permission to update a customer', function () {
+it('denies users without update_customer permission to update a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
 
     expect($user->can('update', $customer))->toBeFalse();
 });
 
-it('allows users with delete_customer permission to delete a customer', function () {
+it('allows users with delete_customer permission to delete a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
     Permission::create(['name' => PermissionEnum::DeleteCustomer]);
@@ -82,14 +83,14 @@ it('allows users with delete_customer permission to delete a customer', function
     expect($user->can('delete', $customer))->toBeTrue();
 });
 
-it('denies users without delete_customer permission to delete a customer', function () {
+it('denies users without delete_customer permission to delete a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
 
     expect($user->can('delete', $customer))->toBeFalse();
 });
 
-it('allows users with restore_customer permission to restore a customer', function () {
+it('allows users with restore_customer permission to restore a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
     Permission::create(['name' => PermissionEnum::RestoreCustomer]);
@@ -98,14 +99,14 @@ it('allows users with restore_customer permission to restore a customer', functi
     expect($user->can('restore', $customer))->toBeTrue();
 });
 
-it('denies users without restore_customer permission to restore a customer', function () {
+it('denies users without restore_customer permission to restore a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
 
     expect($user->can('restore', $customer))->toBeFalse();
 });
 
-it('allows users with force_delete_customer permission to force delete a customer', function () {
+it('allows users with force_delete_customer permission to force delete a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
     Permission::create(['name' => PermissionEnum::ForceDeleteCustomer]);
@@ -114,14 +115,14 @@ it('allows users with force_delete_customer permission to force delete a custome
     expect($user->can('forceDelete', $customer))->toBeTrue();
 });
 
-it('denies users without force_delete_customer permission to force delete a customer', function () {
+it('denies users without force_delete_customer permission to force delete a customer', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
 
     expect($user->can('forceDelete', $customer))->toBeFalse();
 });
 
-it('grants all customer permissions to Admin role', function () {
+it('grants all customer permissions to Admin role', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
 
@@ -139,7 +140,7 @@ it('grants all customer permissions to Admin role', function () {
     expect($user->can('forceDelete', $customer))->toBeTrue();
 });
 
-it('grants specific customer permissions to Manager role', function () {
+it('grants specific customer permissions to Manager role', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
 
@@ -154,7 +155,7 @@ it('grants specific customer permissions to Manager role', function () {
     expect($user->can('delete', $customer))->toBeFalse();
 });
 
-it('grants specific customer permissions to Sales Representative role', function () {
+it('grants specific customer permissions to Sales Representative role', function (): void {
     $user = User::factory()->create();
     $customer = Customer::factory()->create();
 

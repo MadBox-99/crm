@@ -107,7 +107,7 @@ final class User extends Authenticatable implements FilamentUser
     public function assignRole(RoleEnum|string ...$roles): static
     {
         $roleValues = array_map(
-            fn ($role) => $role instanceof RoleEnum ? $role->value : $role,
+            fn (RoleEnum|string $role) => $role instanceof RoleEnum ? $role->value : $role,
             $roles
         );
 

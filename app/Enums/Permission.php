@@ -105,7 +105,7 @@ enum Permission: string
     {
         return array_filter(
             self::cases(),
-            fn (self $permission) => str_ends_with($permission->value, mb_strtolower($resource))
+            fn (self $permission): bool => str_ends_with($permission->value, mb_strtolower($resource))
         );
     }
 

@@ -9,6 +9,7 @@ use App\Enums\Role as RoleEnum;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 final class PermissionSeeder extends Seeder
 {
@@ -18,16 +19,16 @@ final class PermissionSeeder extends Seeder
     public function run(): void
     {
         // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
         // Create all permissions from enum
         foreach (PermissionEnum::cases() as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::query()->firstOrCreate(['name' => $permission]);
         }
 
         // Create roles and assign permissions using enum
         foreach (RoleEnum::cases() as $roleEnum) {
-            $role = Role::firstOrCreate(['name' => $roleEnum]);
+            $role = Role::query()->firstOrCreate(['name' => $roleEnum]);
 
             $role->syncPermissions($roleEnum->permissions());
         }

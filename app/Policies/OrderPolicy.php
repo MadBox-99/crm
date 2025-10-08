@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\Permission;
-use App\Models\Order;
 use App\Models\User;
 
 final class OrderPolicy
@@ -21,7 +20,7 @@ final class OrderPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Order $order): bool
+    public function view(User $user): bool
     {
         return $user->can(Permission::ViewOrder);
     }
@@ -37,7 +36,7 @@ final class OrderPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Order $order): bool
+    public function update(User $user): bool
     {
         return $user->can(Permission::UpdateOrder);
     }
@@ -45,7 +44,7 @@ final class OrderPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Order $order): bool
+    public function delete(User $user): bool
     {
         return $user->can(Permission::DeleteOrder);
     }
@@ -53,7 +52,7 @@ final class OrderPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Order $order): bool
+    public function restore(User $user): bool
     {
         return $user->can(Permission::RestoreOrder);
     }
@@ -61,7 +60,7 @@ final class OrderPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Order $order): bool
+    public function forceDelete(User $user): bool
     {
         return $user->can(Permission::ForceDeleteOrder);
     }

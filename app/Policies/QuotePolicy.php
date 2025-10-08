@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\Permission;
-use App\Models\Quote;
 use App\Models\User;
 
 final class QuotePolicy
@@ -21,7 +20,7 @@ final class QuotePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Quote $quote): bool
+    public function view(User $user): bool
     {
         return $user->can(Permission::ViewQuote);
     }
@@ -37,7 +36,7 @@ final class QuotePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Quote $quote): bool
+    public function update(User $user): bool
     {
         return $user->can(Permission::UpdateQuote);
     }
@@ -45,7 +44,7 @@ final class QuotePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Quote $quote): bool
+    public function delete(User $user): bool
     {
         return $user->can(Permission::DeleteQuote);
     }
@@ -53,7 +52,7 @@ final class QuotePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Quote $quote): bool
+    public function restore(User $user): bool
     {
         return $user->can(Permission::RestoreQuote);
     }
@@ -61,7 +60,7 @@ final class QuotePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Quote $quote): bool
+    public function forceDelete(User $user): bool
     {
         return $user->can(Permission::ForceDeleteQuote);
     }

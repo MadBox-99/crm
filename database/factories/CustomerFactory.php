@@ -1,0 +1,63 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Factories;
+
+use App\Models\Customer;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<Customer>
+ */
+final class CustomerFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        $type = fake()->randomElement(['B2B', 'B2C']);
+
+        return [
+            'unique_identifier' => fake()->unique()->numerify('CUST-######'),
+            'name' => $type === 'B2B' ? fake()->company() : fake()->name(),
+            'type' => $type,
+            'tax_number' => $type === 'B2B' ? fake()->numerify('########-#-##') : null,
+            'registration_number' => $type === 'B2B' ? fake()->numerify('##-##-######') : null,
+            'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->phoneNumber(),
+            'notes' => fake()->optional()->paragraph(),
+            'is_active' => fake()->boolean(90),
+        ];
+    }
+
+    public function b2b(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'type' => 'B2B',
+            'name' => fake()->company(),
+            'tax_number' => fake()->numerify('########-#-##'),
+            'registration_number' => fake()->numerify('##-##-######'),
+        ]);
+    }
+
+    public function b2c(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'type' => 'B2C',
+            'name' => fake()->name(),
+            'tax_number' => null,
+            'registration_number' => null,
+        ]);
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => false,
+        ]);
+    }
+}
