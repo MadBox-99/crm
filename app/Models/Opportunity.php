@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\OpportunityStage;
 use Database\Factories\OpportunityFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -44,6 +45,7 @@ final class Opportunity extends Model
             'value' => 'decimal:2',
             'probability' => 'integer',
             'expected_close_date' => 'date',
+            'stage' => OpportunityStage::class,
         ];
     }
 }

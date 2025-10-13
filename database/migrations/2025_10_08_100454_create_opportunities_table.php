@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OpportunityStage;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('value', 12, 2)->nullable();
             $table->integer('probability')->default(0);
-            $table->enum('stage', ['lead', 'qualified', 'proposal', 'negotiation', 'won', 'lost'])->default('lead');
+            $table->enum('stage', OpportunityStage::cases())->default('lead');
             $table->date('expected_close_date')->nullable();
             $table->foreignIdFor(User::class, 'assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();

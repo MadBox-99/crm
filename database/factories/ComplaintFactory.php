@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Complaint;
+use App\Models\Customer;
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +22,22 @@ final class ComplaintFactory extends Factory
      */
     public function definition(): array
     {
+        $reportedAt = fake()->dateTimeBetween('-3 months', 'now');
+        $status = fake()->randomElement(['open', 'in_progress', 'resolved', 'closed']);
+        $resolvedAt = in_array($status, ['resolved', 'closed']) ? fake()->dateTimeBetween($reportedAt, 'now') : null;
+
         return [
-            //
+            'customer_id' => Customer::factory(),
+            'order_id' => fake()->boolean(60) ? Order::factory() : null,
+            'reported_by' => User::factory(),
+            'assigned_to' => fake()->boolean(80) ? User::factory() : null,
+            'title' => fake()->sentence(),
+            'description' => fake()->paragraphs(2, true),
+            'severity' => fake()->randomElement(['low', 'medium', 'high', 'critical']),
+            'status' => $status,
+            'resolution' => $resolvedAt ? fake()->paragraph() : null,
+            'reported_at' => $reportedAt,
+            'resolved_at' => $resolvedAt,
         ];
     }
 }

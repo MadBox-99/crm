@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\BugReport;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,13 @@ final class BugReportFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'title' => fake()->sentence(),
+            'description' => fake()->paragraphs(3, true),
+            'severity' => fake()->randomElement(['low', 'medium', 'high', 'critical']),
+            'status' => fake()->randomElement(['open', 'in_progress', 'resolved', 'closed', 'rejected']),
+            'assigned_to' => fake()->boolean(70) ? User::factory() : null,
+            'resolved_at' => fake()->boolean(30) ? fake()->dateTimeBetween('-1 month', 'now') : null,
         ];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\InvoiceStatus;
 use Database\Factories\InvoiceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -52,6 +53,7 @@ final class Invoice extends Model
             'tax_amount' => 'decimal:2',
             'total' => 'decimal:2',
             'paid_at' => 'datetime',
+            'status' => InvoiceStatus::class,
         ];
     }
 }

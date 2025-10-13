@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('customer_addresses', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
-            $table->enum('type', ['billing', 'shipping'])->default('billing');
+            $table->string('type')->default('billing');
             $table->string('country');
             $table->string('postal_code');
             $table->string('city');
