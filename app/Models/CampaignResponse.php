@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CampaignResponseType;
 use Database\Factories\CampaignResponseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,7 @@ final class CampaignResponse extends Model
     protected function casts(): array
     {
         return [
+            'response_type' => CampaignResponseType::class,
             'responded_at' => 'datetime',
         ];
     }
