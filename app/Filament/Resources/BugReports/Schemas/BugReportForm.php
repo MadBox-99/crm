@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\BugReports\Schemas;
 
+use App\Enums\BugReportStatus;
+use App\Enums\ComplaintSeverity;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -23,14 +25,19 @@ final class BugReportForm
                 Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('severity')
+                Select::make('severity')
+                    ->options(ComplaintSeverity::class)
+                    ->enum(ComplaintSeverity::class)
                     ->required()
-                    ->default('medium'),
-                TextInput::make('status')
+                    ->default(ComplaintSeverity::Medium),
+                Select::make('status')
+                    ->options(BugReportStatus::class)
+                    ->enum(BugReportStatus::class)
                     ->required()
-                    ->default('open'),
-                TextInput::make('assigned_to')
-                    ->numeric(),
+                    ->default(BugReportStatus::Open),
+                Select::make('assigned_to')
+                    ->relationship('assignedUser', 'name')
+                    ->nullable(),
                 DateTimePicker::make('resolved_at'),
             ]);
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ComplaintSeverity;
+use App\Enums\ComplaintStatus;
 use Database\Factories\ComplaintFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -57,6 +59,8 @@ final class Complaint extends Model
     protected function casts(): array
     {
         return [
+            'severity' => ComplaintSeverity::class,
+            'status' => ComplaintStatus::class,
             'reported_at' => 'datetime',
             'resolved_at' => 'datetime',
         ];

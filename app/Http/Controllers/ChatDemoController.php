@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\CustomerType;
 use App\Models\Customer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
@@ -20,7 +21,7 @@ final class ChatDemoController extends Controller
                 'name' => 'Demo Customer',
                 'email' => 'demo@example.com',
                 'phone' => '+36 20 123 4567',
-                'type' => 'individual',
+                'type' => CustomerType::B2C,
                 'is_active' => true,
             ]
         );

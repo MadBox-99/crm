@@ -44,6 +44,11 @@ final class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     public function calculateTotals(): void
     {
         $this->subtotal = $this->orderItems()->sum('unit_price * quantity');

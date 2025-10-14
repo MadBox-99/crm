@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Enums\ComplaintSeverity;
+use App\Enums\ComplaintStatus;
 use App\Enums\CustomerType;
+use App\Enums\Role;
 use App\Models\Complaint;
 use App\Models\Customer;
 use App\Models\User;
@@ -60,8 +63,8 @@ final class ComplaintSubmission extends Component
             'customer_id' => $customer->id,
             'title' => $this->title,
             'description' => $this->description,
-            'severity' => 'medium', // Default severity, admin can change it
-            'status' => 'open',
+            'severity' => ComplaintSeverity::Medium,
+            'status' => ComplaintStatus::Open,
             'reported_at' => now(),
         ]);
 
@@ -83,10 +86,7 @@ final class ComplaintSubmission extends Component
     {
         // Get all users with admin or manager role
         $adminsAndManagers = User::query()
-            ->where(function ($query) {
-                $query->whereJsonContains('roles', 'admin')
-                    ->orWhereJsonContains('roles', 'manager');
-            })
+            ->role([Role::Admin, Role::Manager])
             ->get();
 
         if ($adminsAndManagers->isNotEmpty()) {

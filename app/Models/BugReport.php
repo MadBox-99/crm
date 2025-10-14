@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\BugReportStatus;
+use App\Enums\ComplaintSeverity;
 use Database\Factories\BugReportFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +40,8 @@ final class BugReport extends Model
     {
         return [
             'resolved_at' => 'datetime',
+            'severity' => ComplaintSeverity::class,
+            'status' => BugReportStatus::class,
         ];
     }
 }

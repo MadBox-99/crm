@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\ComplaintSeverity;
+use App\Enums\ComplaintStatus;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\User;
@@ -20,12 +22,12 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Order::class)->nullable()->constrained()->nullOnDelete();
-            $table->foreignIdFor(User::class, 'reported_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'reported_by')->nullable()->constrained('users')->cascadeOnDelete();
             $table->foreignIdFor(User::class, 'assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->string('title');
             $table->text('description');
-            $table->enum('severity', ['low', 'medium', 'high', 'critical'])->default('medium');
-            $table->enum('status', ['open', 'in_progress', 'resolved', 'closed'])->default('open');
+            $table->string('severity')->default(ComplaintSeverity::Medium->value);
+            $table->string('status')->default(ComplaintStatus::Open->value);
             $table->text('resolution')->nullable();
             $table->timestamp('reported_at');
             $table->timestamp('resolved_at')->nullable();

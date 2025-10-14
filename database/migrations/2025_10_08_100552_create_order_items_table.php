@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Order::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Product::class)->nullable()->constrained()->nullOnDelete();
-            $table->string('description');
+            $table->text('description')->nullable();
             $table->integer('quantity')->default(1);
             $table->decimal('unit_price', 12, 2)->default(0);
             $table->decimal('discount_amount', 12, 2)->default(0);

@@ -19,6 +19,8 @@ use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Slider;
+use Filament\Forms\Components\Slider\Enums\PipsMode;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -28,6 +30,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 final class OpportunitiesRelationManager extends RelationManager
 {
@@ -44,10 +47,17 @@ final class OpportunitiesRelationManager extends RelationManager
                     ->columnSpanFull(),
                 TextInput::make('value')
                     ->numeric(),
-                TextInput::make('probability')
+                Slider::make('probability')
                     ->required()
-                    ->numeric()
-                    ->default(0),
+                    ->minValue(0)
+                    ->maxValue(100)
+                    ->range(minValue: 0, maxValue: 100)
+                    ->tooltips()
+                    ->step(5)
+                    ->default(0)
+                    ->fillTrack()
+                    ->pips(PipsMode::Steps, 5),
+
                 Select::make('stage')
                     ->options(OpportunityStage::class)
                     ->default(OpportunityStage::Lead)
@@ -58,6 +68,7 @@ final class OpportunitiesRelationManager extends RelationManager
                     ->searchable()
                     ->preload()
                     ->nullable()
+                    ->default(Auth::id())
                     ->required(),
             ]);
     }
@@ -81,8 +92,7 @@ final class OpportunitiesRelationManager extends RelationManager
                 TextColumn::make('expected_close_date')
                     ->date()
                     ->sortable(),
-                TextColumn::make('assigned_to')
-                    ->numeric()
+                TextColumn::make('assignedUser.name')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -110,6 +120,7 @@ final class OpportunitiesRelationManager extends RelationManager
                 DeleteAction::make(),
                 ForceDeleteAction::make(),
                 RestoreAction::make(),
+
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

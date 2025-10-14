@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\BugReportStatus;
+use App\Enums\ComplaintSeverity;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,8 +21,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
             $table->string('title');
             $table->text('description');
-            $table->enum('severity', ['low', 'medium', 'high', 'critical'])->default('medium');
-            $table->enum('status', ['open', 'in_progress', 'resolved', 'closed', 'rejected'])->default('open');
+            $table->string('severity')->default(ComplaintSeverity::Medium->value);
+            $table->string('status')->default(BugReportStatus::Open->value);
             $table->foreignIdFor(User::class, 'assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('resolved_at')->nullable();
             $table->timestamps();

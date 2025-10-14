@@ -10,6 +10,7 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -31,24 +32,20 @@ final class ItemsRelationManager extends RelationManager
                 Select::make('product_id')
                     ->live()
                     ->relationship('product', 'name'),
-                TextInput::make('description')
-                    ->required(),
+                RichEditor::make('description'),
                 TextInput::make('quantity')
                     ->live()
                     ->required()
                     ->integer()
                     ->numeric()
                     ->afterStateUpdated(function (Set $set, Get $get, $state): void {
-
                         if ($get('product_id') && $get('unit_price') < 0 && $get('unit_price')) {
                             $set('unit_price', $this->ownerRecord->customer->getPriceForProduct($get('product_id')));
 
                         }
-
                         if ($state && $get('unit_price')) {
                             $set('total', $state * $get('unit_price'));
                         }
-
                     })
                     ->default(1),
                 TextInput::make('unit_price')

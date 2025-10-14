@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\ComplaintSeverity;
+use App\Enums\ComplaintStatus;
 use App\Models\Complaint;
 use App\Models\Customer;
 use App\Models\Order;
@@ -23,8 +25,8 @@ final class ComplaintFactory extends Factory
     public function definition(): array
     {
         $reportedAt = fake()->dateTimeBetween('-3 months', 'now');
-        $status = fake()->randomElement(['open', 'in_progress', 'resolved', 'closed']);
-        $resolvedAt = in_array($status, ['resolved', 'closed']) ? fake()->dateTimeBetween($reportedAt, 'now') : null;
+        $status = fake()->randomElement(ComplaintStatus::class);
+        $resolvedAt = in_array($status, [ComplaintStatus::Resolved, ComplaintStatus::Closed]) ? fake()->dateTimeBetween($reportedAt, 'now') : null;
 
         return [
             'customer_id' => Customer::factory(),
@@ -33,7 +35,7 @@ final class ComplaintFactory extends Factory
             'assigned_to' => fake()->boolean(80) ? User::factory() : null,
             'title' => fake()->sentence(),
             'description' => fake()->paragraphs(2, true),
-            'severity' => fake()->randomElement(['low', 'medium', 'high', 'critical']),
+            'severity' => fake()->randomElement(ComplaintSeverity::class),
             'status' => $status,
             'resolution' => $resolvedAt ? fake()->paragraph() : null,
             'reported_at' => $reportedAt,

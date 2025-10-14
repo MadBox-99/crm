@@ -15,20 +15,40 @@
                 display: none !important;
             }
         </style>
+        <script>
+            // Apply theme before page renders to prevent flash
+            (function() {
+                const theme = localStorage.getItem('theme') || 'auto';
+                const root = document.documentElement;
 
+                if (theme === 'dark') {
+                    root.classList.add('dark');
+                } else if (theme === 'light') {
+                    root.classList.remove('dark');
+                } else { // auto
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        root.classList.add('dark');
+                    } else {
+                        root.classList.remove('dark');
+                    }
+                }
+            })();
+        </script>
         @filamentStyles
+
         @vite('resources/js/app.js')
 
     </head>
 
-    <body class="antialiased">
+    <body class="antialiased" x-data="{ mobileMenuOpen: false }">
+        <x-layouts.navbar />
 
         {{ $slot }}
 
         @livewire('notifications')
-        
+
         @filamentScripts
-        
+
     </body>
 
 </html>

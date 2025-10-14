@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Complaints\Schemas;
 
+use App\Enums\ComplaintSeverity;
+use App\Enums\ComplaintStatus;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -20,23 +22,25 @@ final class ComplaintForm
                     ->relationship('customer', 'name')
                     ->required(),
                 Select::make('order_id')
-                    ->relationship('order', 'id'),
-                TextInput::make('reported_by')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('assigned_to')
-                    ->numeric(),
+                    ->relationship('order', 'order_number'),
+                Select::make('reported_by')
+                    ->relationship('reporter', 'name')
+                    ->required(),
+                Select::make('assigned_to')
+                    ->relationship('assignedUser', 'name'),
                 TextInput::make('title')
                     ->required(),
                 Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('severity')
+                Select::make('severity')
+                    ->enum(ComplaintSeverity::class)
                     ->required()
-                    ->default('medium'),
-                TextInput::make('status')
+                    ->default(ComplaintSeverity::Medium),
+                Select::make('status')
+                    ->enum(ComplaintStatus::class)
                     ->required()
-                    ->default('open'),
+                    ->default(ComplaintStatus::Open),
                 Textarea::make('resolution')
                     ->columnSpanFull(),
                 DateTimePicker::make('reported_at')

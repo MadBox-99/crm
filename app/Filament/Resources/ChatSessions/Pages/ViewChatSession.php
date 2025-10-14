@@ -12,6 +12,7 @@ use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Colors\Color;
+use Illuminate\Support\Facades\Auth;
 
 final class ViewChatSession extends ViewRecord
 {
@@ -34,7 +35,7 @@ final class ViewChatSession extends ViewRecord
                 ->requiresConfirmation()
                 ->action(function () {
                     $chatService = app(ChatService::class);
-                    $chatService->assignSession($this->record, auth()->user());
+                    $chatService->assignSession($this->record, Auth::user());
 
                     Notification::make()
                         ->title('Session Assigned')
