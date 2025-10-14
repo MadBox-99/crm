@@ -69,7 +69,7 @@ it('has unique_identifier field', function (): void {
 it('enforces type enum values', function (): void {
     $customer = Customer::factory()->create();
 
-    expect($customer->type)->toBeIn(CustomerType::class);
+    expect($customer->type)->toBeIn(CustomerType::cases());
 });
 
 it('can store contact information', function (): void {
