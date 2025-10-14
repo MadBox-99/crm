@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Quotes\Schemas;
 
+use App\Enums\QuoteStatus;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -27,9 +28,10 @@ final class QuoteForm
                     ->required(),
                 DatePicker::make('valid_until')
                     ->required(),
-                TextInput::make('status')
+                Select::make('status')
                     ->required()
-                    ->default('draft'),
+                    ->default(QuoteStatus::Draft)
+                    ->options(QuoteStatus::class),
                 TextInput::make('subtotal')
                     ->required()
                     ->numeric()

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\CampaignResponseType;
 use App\Models\Campaign;
 use App\Models\CampaignResponse;
 use App\Models\Customer;
@@ -22,14 +23,14 @@ it('has fillable attributes', function (): void {
     $response = CampaignResponse::factory()->create([
         'campaign_id' => $campaign->id,
         'customer_id' => $customer->id,
-        'response_type' => 'interested',
+        'response_type' => CampaignResponseType::Interested,
         'notes' => 'Customer interested',
         'responded_at' => now(),
     ]);
 
     expect($response->campaign_id)->toBe($campaign->id)
         ->and($response->customer_id)->toBe($customer->id)
-        ->and($response->response_type)->toBe('interested')
+        ->and($response->response_type)->toBe(CampaignResponseType::Interested)
         ->and($response->notes)->toBe('Customer interested');
 });
 

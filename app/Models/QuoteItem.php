@@ -34,6 +34,15 @@ final class QuoteItem extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function updateTotal(): void
+    {
+        dump($this->quantity, $this->unit_price, $this->discount_percent, $this->tax_rate);
+        $this->total = ($this->quantity * $this->unit_price) * (1 - (float) $this->discount_percent / 100) + ($this->quantity * $this->unit_price * $this->tax_rate / 100);
+        $this->save();
+        dump($this->quantity, $this->unit_price, $this->discount_percent, $this->tax_rate);
+        dump('Total updated: '.$this->total);
+    }
+
     protected function casts(): array
     {
         return [

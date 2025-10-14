@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ChatMessageSenderType;
 use Database\Factories\ChatMessageFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,7 +36,7 @@ final class ChatMessage extends Model
     protected function casts(): array
     {
         return [
-            //
+            'sender_type' => ChatMessageSenderType::class,
         ];
     }
 }

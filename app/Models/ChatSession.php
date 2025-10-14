@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ChatSessionStatus;
 use Database\Factories\ChatSessionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +42,7 @@ final class ChatSession extends Model
     protected function casts(): array
     {
         return [
+            'status' => ChatSessionStatus::class,
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
         ];

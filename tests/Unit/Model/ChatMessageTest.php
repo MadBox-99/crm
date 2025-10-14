@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\ChatMessageSenderType;
 use App\Models\ChatMessage;
 use App\Models\ChatSession;
 use App\Models\Customer;
@@ -23,13 +24,13 @@ it('has fillable attributes', function (): void {
 
     $chatMessage = ChatMessage::factory()->create([
         'chat_session_id' => $chatSession->id,
-        'sender_type' => 'user',
+        'sender_type' => ChatMessageSenderType::User,
         'sender_id' => $user->id,
         'message' => 'Hello, how can I help you?',
     ]);
 
     expect($chatMessage->chat_session_id)->toBe($chatSession->id)
-        ->and($chatMessage->sender_type)->toBe('user')
+        ->and($chatMessage->sender_type)->toBe(ChatMessageSenderType::User)
         ->and($chatMessage->sender_id)->toBe($user->id)
         ->and($chatMessage->message)->toBe('Hello, how can I help you?');
 });

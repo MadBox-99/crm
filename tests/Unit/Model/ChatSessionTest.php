@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\ChatSessionStatus;
 use App\Models\ChatMessage;
 use App\Models\ChatSession;
 use App\Models\Customer;
@@ -25,12 +26,12 @@ it('has fillable attributes', function (): void {
         'user_id' => $user->id,
         'started_at' => now(),
         'ended_at' => null,
-        'status' => 'active',
+        'status' => ChatSessionStatus::Active,
     ]);
 
     expect($chatSession->customer_id)->toBe($customer->id)
         ->and($chatSession->user_id)->toBe($user->id)
-        ->and($chatSession->status)->toBe('active')
+        ->and($chatSession->status)->toBe(ChatSessionStatus::Active)
         ->and($chatSession->ended_at)->toBeNull();
 });
 

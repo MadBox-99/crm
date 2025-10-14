@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\QuoteStatus;
 use App\Models\Customer;
 use App\Models\Opportunity;
 use Illuminate\Database\Migrations\Migration;
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->string('quote_number')->unique();
             $table->date('issue_date');
             $table->date('valid_until');
-            $table->enum('status', ['draft', 'sent', 'accepted', 'rejected', 'expired'])->default('draft');
+            $table->string('status')->default(QuoteStatus::Draft->value);
             $table->decimal('subtotal', 12, 2)->default(0);
             $table->decimal('discount_amount', 12, 2)->default(0);
             $table->decimal('tax_amount', 12, 2)->default(0);

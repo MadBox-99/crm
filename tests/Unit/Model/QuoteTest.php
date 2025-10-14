@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\QuoteStatus;
 use App\Models\Customer;
 use App\Models\Opportunity;
 use App\Models\Order;
@@ -28,7 +29,7 @@ it('has fillable attributes', function (): void {
         'quote_number' => 'QT-001',
         'issue_date' => now(),
         'valid_until' => now()->addDays(30),
-        'status' => 'draft',
+        'status' => QuoteStatus::Draft,
         'subtotal' => 100.00,
         'discount_amount' => 10.00,
         'tax_amount' => 24.30,
@@ -39,7 +40,7 @@ it('has fillable attributes', function (): void {
     expect($quote->customer_id)->toBe($customer->id)
         ->and($quote->opportunity_id)->toBe($opportunity->id)
         ->and($quote->quote_number)->toBe('QT-001')
-        ->and($quote->status)->toBe('draft')
+        ->and($quote->status)->toBe(QuoteStatus::Draft)
         ->and($quote->subtotal)->toBe('100.00')
         ->and($quote->discount_amount)->toBe('10.00')
         ->and($quote->tax_amount)->toBe('24.30')

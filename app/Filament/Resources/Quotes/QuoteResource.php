@@ -8,6 +8,8 @@ use App\Enums\NavigationGroup;
 use App\Filament\Resources\Quotes\Pages\CreateQuote;
 use App\Filament\Resources\Quotes\Pages\EditQuote;
 use App\Filament\Resources\Quotes\Pages\ListQuotes;
+use App\Filament\Resources\Quotes\RelationManagers\ItemsRelationManager;
+use App\Filament\Resources\Quotes\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\Quotes\Schemas\QuoteForm;
 use App\Filament\Resources\Quotes\Tables\QuotesTable;
 use App\Models\Quote;
@@ -37,7 +39,8 @@ final class QuoteResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ItemsRelationManager::class,
+            OrdersRelationManager::class,
         ];
     }
 

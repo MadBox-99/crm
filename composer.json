@@ -73,13 +73,13 @@
             "npx npm-check-updates -u"
         ],
         "lint": [
-            "rector",
-            "pint --parallel",
+            "@php vendor/bin/rector",
+            "@php vendor/bin/pint --parallel",
             "npm run lint"
         ],
         "test:lint": [
-            "pint --parallel --test",
-            "rector --dry-run",
+            "@php vendor/bin/pint --parallel",
+            "@php vendor/bin/rector --dry-run",
             "npm run test:lint"
         ],
         "test:unit": "pest --parallel",
