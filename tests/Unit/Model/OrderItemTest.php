@@ -23,7 +23,7 @@ it('has fillable attributes', function (): void {
         'order_id' => $order->id,
         'product_id' => $product->id,
         'description' => 'Test Product',
-        'quantity' => 5.00,
+        'quantity' => 5,
         'unit_price' => 100.00,
         'discount_amount' => 10.00,
         'tax_rate' => 27.00,

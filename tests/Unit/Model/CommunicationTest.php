@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Enums\CommunicationChannel;
+use App\Enums\CommunicationDirection;
+use App\Enums\CommunicationStatus;
 use App\Models\Communication;
 use App\Models\Customer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,11 +34,11 @@ it('has fillable attributes', function (): void {
     ]);
 
     expect($communication->customer_id)->toBe($customer->id)
-        ->and($communication->channel)->toBe('email')
-        ->and($communication->direction)->toBe('outbound')
+        ->and($communication->channel)->toBe(CommunicationChannel::Email)
+        ->and($communication->direction)->toBe(CommunicationDirection::Outbound)
         ->and($communication->subject)->toBe('Test Subject')
         ->and($communication->content)->toBe('Test Content')
-        ->and($communication->status)->toBe('sent')
+        ->and($communication->status)->toBe(CommunicationStatus::Sent)
         ->and($communication->read_at)->toBeNull();
 });
 

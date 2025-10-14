@@ -33,6 +33,26 @@ final class OrderItem extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function calculateTotals(): void
+    {
+        $this->total = ($this->unit_price * $this->quantity) - $this->discount_amount + (($this->unit_price * $this->quantity - $this->discount_amount) * ($this->tax_rate / 100));
+        $this->save();
+    }
+
+    /**
+     * @return array<string, float>['subtotal' => float, 'total' => float]
+     */
+    public function getCalculatedTotals(): array
+    {
+        $this->total = ($this->unit_price * $this->quantity) - $this->discount_amount + (($this->unit_price * $this->quantity - $this->discount_amount) * ($this->tax_rate / 100));
+        $this->save();
+
+        return [
+            'subtotal' => $this->unit_price * $this->quantity,
+            'total' => $this->total,
+        ];
+    }
+
     protected function casts(): array
     {
         return [

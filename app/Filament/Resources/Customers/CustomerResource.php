@@ -9,6 +9,16 @@ use App\Filament\Resources\Customers\Pages\CreateCustomer;
 use App\Filament\Resources\Customers\Pages\EditCustomer;
 use App\Filament\Resources\Customers\Pages\ListCustomers;
 use App\Filament\Resources\Customers\RelationManagers\AddressesRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\AttributesRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\CommunicationsRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\ComplaintsRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\ContactsRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\InteractionsRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\InvoicesRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\OpportunitiesRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\OrdersRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\QuotesRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\TasksRelationManager;
 use App\Filament\Resources\Customers\Schemas\CustomerForm;
 use App\Filament\Resources\Customers\Tables\CustomersTable;
 use App\Models\Customer;
@@ -38,7 +48,17 @@ final class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
+            ContactsRelationManager::class,
             AddressesRelationManager::class,
+            AttributesRelationManager::class,
+            OpportunitiesRelationManager::class,
+            QuotesRelationManager::class,
+            OrdersRelationManager::class,
+            InvoicesRelationManager::class,
+            InteractionsRelationManager::class,
+            TasksRelationManager::class,
+            ComplaintsRelationManager::class,
+            CommunicationsRelationManager::class,
         ];
     }
 

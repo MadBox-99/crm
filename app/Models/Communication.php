@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CommunicationChannel;
+use App\Enums\CommunicationDirection;
+use App\Enums\CommunicationStatus;
 use Database\Factories\CommunicationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +40,9 @@ final class Communication extends Model
             'sent_at' => 'datetime',
             'delivered_at' => 'datetime',
             'read_at' => 'datetime',
+            'status' => CommunicationStatus::class,
+            'channel' => CommunicationChannel::class,
+            'direction' => CommunicationDirection::class,
         ];
     }
 }

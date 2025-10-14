@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\InvoiceStatus;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Order;
@@ -26,7 +27,7 @@ it('has fillable attributes', function (): void {
         'invoice_number' => 'INV-001',
         'issue_date' => now(),
         'due_date' => now()->addDays(30),
-        'status' => 'draft',
+        'status' => InvoiceStatus::Draft,
         'subtotal' => 100.00,
         'discount_amount' => 10.00,
         'tax_amount' => 24.30,
@@ -38,7 +39,7 @@ it('has fillable attributes', function (): void {
     expect($invoice->customer_id)->toBe($customer->id)
         ->and($invoice->order_id)->toBe($order->id)
         ->and($invoice->invoice_number)->toBe('INV-001')
-        ->and($invoice->status)->toBe('draft')
+        ->and($invoice->status)->toBe(InvoiceStatus::Draft)
         ->and($invoice->subtotal)->toBe('100.00')
         ->and($invoice->discount_amount)->toBe('10.00')
         ->and($invoice->tax_amount)->toBe('24.30')

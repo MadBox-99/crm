@@ -7,6 +7,7 @@ namespace App\Filament\Resources\Communications\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -19,12 +20,15 @@ final class CommunicationsTable
                 TextColumn::make('customer.name')
                     ->searchable(),
                 TextColumn::make('channel')
+                    ->badge()
                     ->searchable(),
                 TextColumn::make('direction')
+                    ->badge()
                     ->searchable(),
                 TextColumn::make('subject')
                     ->searchable(),
                 TextColumn::make('status')
+                    ->badge()
                     ->searchable(),
                 TextColumn::make('sent_at')
                     ->dateTime()
@@ -48,6 +52,7 @@ final class CommunicationsTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

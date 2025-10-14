@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\DiscountType;
+use App\Enums\DiscountValueType;
 use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
@@ -18,8 +20,8 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['quantity', 'value_threshold', 'time_based', 'custom'])->default('custom');
-            $table->enum('value_type', ['percentage', 'fixed'])->default('percentage');
+            $table->string('type')->default(DiscountType::Custom->value);
+            $table->string('value_type')->default(DiscountValueType::Percentage->value);
             $table->decimal('value', 12, 2)->default(0);
             $table->decimal('min_quantity', 10, 2)->nullable();
             $table->decimal('min_value', 12, 2)->nullable();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\SetList;
-use RectorLaravel\Rector\MethodCall\ValidationRuleArrayStringValueToArrayRector;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
 
@@ -27,9 +26,6 @@ return RectorConfig::configure()
         SetList::PHP_83,
         SetList::TYPE_DECLARATION,
     ])
-    ->withRules([
-        ValidationRuleArrayStringValueToArrayRector::class,
-    ])
     ->withPaths([
         __DIR__.'/app',
         __DIR__.'/tests',
@@ -38,7 +34,7 @@ return RectorConfig::configure()
         __DIR__.'/resources',
         __DIR__.'/routes',
     ])
-    ->withImportNames(true)
+    ->withImportNames()
     ->withParallel()
     ->withPreparedSets(
         deadCode: true,

@@ -16,13 +16,16 @@ final class CommunicationInfolist
                 TextEntry::make('customer.name')
                     ->label('Customer')
                     ->placeholder('-'),
-                TextEntry::make('channel'),
-                TextEntry::make('direction'),
+                TextEntry::make('channel')
+                    ->badge(),
+                TextEntry::make('direction')
+                    ->badge(),
                 TextEntry::make('subject')
                     ->placeholder('-'),
                 TextEntry::make('content')
                     ->columnSpanFull(),
-                TextEntry::make('status'),
+                TextEntry::make('status')
+                    ->badge(),
                 TextEntry::make('sent_at')
                     ->dateTime()
                     ->placeholder('-'),

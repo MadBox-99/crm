@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Communications\Schemas;
 
+use App\Enums\CommunicationChannel;
+use App\Enums\CommunicationDirection;
+use App\Enums\CommunicationStatus;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -18,19 +21,22 @@ final class CommunicationForm
             ->components([
                 Select::make('customer_id')
                     ->relationship('customer', 'name'),
-                TextInput::make('channel')
-                    ->required()
-                    ->default('email'),
-                TextInput::make('direction')
-                    ->required()
-                    ->default('outbound'),
+                Select::make('channel')
+                    ->options(CommunicationChannel::class)
+                    ->default('email')
+                    ->required(),
+                Select::make('direction')
+                    ->options(CommunicationDirection::class)
+                    ->default('outbound')
+                    ->required(),
                 TextInput::make('subject'),
                 Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('status')
-                    ->required()
-                    ->default('pending'),
+                Select::make('status')
+                    ->options(CommunicationStatus::class)
+                    ->default('pending')
+                    ->required(),
                 DateTimePicker::make('sent_at'),
                 DateTimePicker::make('delivered_at'),
                 DateTimePicker::make('read_at'),

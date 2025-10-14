@@ -54,7 +54,9 @@ final class DatabaseSeeder extends Seeder
             ->has(CustomerAddress::factory()->shipping(), 'addresses')
             ->has(CustomerAttribute::factory(3), 'attributes')
             ->create();
-
+        $this->call([
+            OrderSeeder::class,
+        ]);
         $this->command->info('Database seeded successfully!');
     }
 }

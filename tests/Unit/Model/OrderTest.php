@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\OrderStatus;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -26,7 +27,7 @@ it('has fillable attributes', function (): void {
         'quote_id' => $quote->id,
         'order_number' => 'ORD-001',
         'order_date' => now(),
-        'status' => 'pending',
+        'status' => OrderStatus::Pending,
         'subtotal' => 100.00,
         'discount_amount' => 10.00,
         'tax_amount' => 24.30,
@@ -37,7 +38,7 @@ it('has fillable attributes', function (): void {
     expect($order->customer_id)->toBe($customer->id)
         ->and($order->quote_id)->toBe($quote->id)
         ->and($order->order_number)->toBe('ORD-001')
-        ->and($order->status)->toBe('pending')
+        ->and($order->status)->toBe(OrderStatus::Pending)
         ->and($order->subtotal)->toBe('100.00')
         ->and($order->discount_amount)->toBe('10.00')
         ->and($order->tax_amount)->toBe('24.30')
@@ -96,6 +97,6 @@ it('has items relationship', function (): void {
     $order = Order::factory()->create();
     $item = OrderItem::factory()->create(['order_id' => $order->id]);
 
-    expect($order->items)->toHaveCount(1)
-        ->and($order->items->first()->id)->toBe($item->id);
+    expect($order->orderItems)->toHaveCount(1)
+        ->and($order->orderItems->first()->id)->toBe($item->id);
 });

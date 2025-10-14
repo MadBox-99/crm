@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Communications\Pages;
 
 use App\Filament\Resources\Communications\CommunicationResource;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
 final class EditCommunication extends EditRecord
@@ -15,6 +16,7 @@ final class EditCommunication extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            ViewAction::make(),
             DeleteAction::make(),
         ];
     }

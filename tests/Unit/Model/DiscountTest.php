@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\DiscountType;
+use App\Enums\DiscountValueType;
 use App\Models\Customer;
 use App\Models\Discount;
 use App\Models\Product;
@@ -22,8 +24,8 @@ it('has fillable attributes', function (): void {
 
     $discount = Discount::factory()->create([
         'name' => 'Summer Sale',
-        'type' => 'custom',
-        'value_type' => 'percentage',
+        'type' => DiscountType::Custom,
+        'value_type' => DiscountValueType::Percentage,
         'value' => 20.00,
         'min_quantity' => 5.00,
         'min_value' => 1000.00,
@@ -36,8 +38,8 @@ it('has fillable attributes', function (): void {
     ]);
 
     expect($discount->name)->toBe('Summer Sale')
-        ->and($discount->type)->toBe('custom')
-        ->and($discount->value_type)->toBe('percentage')
+        ->and($discount->type)->toBe(DiscountType::Custom)
+        ->and($discount->value_type)->toBe(DiscountValueType::Percentage)
         ->and($discount->value)->toBe('20.00')
         ->and($discount->min_quantity)->toBe('5.00')
         ->and($discount->min_value)->toBe('1000.00')

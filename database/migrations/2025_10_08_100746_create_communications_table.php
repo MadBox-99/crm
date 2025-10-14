@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Enums\CommunicationChannel;
+use App\Enums\CommunicationDirection;
+use App\Enums\CommunicationStatus;
 use App\Models\Customer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,11 +20,11 @@ return new class extends Migration
         Schema::create('communications', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(Customer::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->enum('channel', ['email', 'sms', 'chat', 'social'])->default('email');
-            $table->enum('direction', ['inbound', 'outbound'])->default('outbound');
+            $table->string('channel')->default(CommunicationChannel::Email->value);
+            $table->string('direction')->default(CommunicationDirection::Outbound->value);
             $table->string('subject')->nullable();
             $table->text('content');
-            $table->enum('status', ['pending', 'sent', 'delivered', 'failed', 'read'])->default('pending');
+            $table->string('status')->default(CommunicationStatus::Pending->value);
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('read_at')->nullable();

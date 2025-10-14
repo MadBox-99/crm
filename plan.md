@@ -16,42 +16,81 @@ Laravel 12 alapú CRM rendszer fejlesztése, amely megfelel a GINOP PLUSZ-1.2.4-
 
 ### Főbb modellek és kapcsolatok
 
+#### 0. Alapvető rendszer táblák
+```
+- User (Felhasználó)
+  - id
+  - name
+  - email (unique)
+  - email_verified_at (timestamp, nullable)
+  - password
+  - remember_token
+  - timestamps
+
+- password_reset_tokens
+  - email (primary)
+  - token
+  - created_at (timestamp, nullable)
+
+- sessions
+  - id (primary)
+  - user_id (foreign key, nullable, indexed)
+  - ip_address (varchar 45, nullable)
+  - user_agent (text, nullable)
+  - payload (long text)
+  - last_activity (integer, indexed)
+
+- personal_access_tokens (Laravel Sanctum)
+- permissions és roles táblák (Spatie Permission csomag)
+- cache, cache_locks táblák (Laravel cache)
+- jobs, job_batches, failed_jobs táblák (Laravel queue)
+```
+
 #### 1. Ügyfélkezelés (Customers)
 ```
 - Customer (Ügyfél)
   - id
-  - unique_identifier (egyedi azonosító)
+  - unique_identifier (egyedi azonosító, unique)
   - name
-  - type (B2B/B2C)
-  - tax_number
+  - type (B2B/B2C, default: B2C)
+  - tax_number (nullable)
+  - registration_number (nullable)
+  - email (nullable)
+  - phone (nullable)
+  - notes (text, nullable)
+  - is_active (boolean, default: true)
   - timestamps
+  - soft_deletes
 
 - CustomerContact (Kapcsolattartó)
   - id
-  - customer_id
+  - customer_id (foreign key -> customers, cascade on delete)
   - name
-  - email
-  - phone
-  - position
-  - is_primary
+  - email (nullable)
+  - phone (nullable)
+  - position (nullable)
+  - is_primary (boolean, default: false)
   - timestamps
 
 - CustomerAddress (Cím)
   - id
-  - customer_id
-  - type (billing/shipping)
+  - customer_id (foreign key -> customers, cascade on delete)
+  - type (default: 'billing')
   - country
   - postal_code
   - city
   - street
-  - is_default
+  - building_number (nullable)
+  - floor (nullable)
+  - door (nullable)
+  - is_default (boolean, default: false)
   - timestamps
 
 - CustomerAttribute (Egyedi jellemzők)
   - id
-  - customer_id
+  - customer_id (foreign key -> customers, cascade on delete)
   - attribute_key
-  - attribute_value
+  - attribute_value (text, nullable)
   - timestamps
 ```
 
@@ -60,60 +99,64 @@ Laravel 12 alapú CRM rendszer fejlesztése, amely megfelel a GINOP PLUSZ-1.2.4-
 - Campaign (Kampány)
   - id
   - name
-  - description
-  - start_date
-  - end_date
-  - status
-  - target_audience_criteria (JSON)
+  - description (text, nullable)
+  - start_date (date)
+  - end_date (date, nullable)
+  - status (default: 'draft' via CampaignStatus enum)
+  - target_audience_criteria (JSON, nullable)
+  - created_by (foreign key -> users, nullable, null on delete)
   - timestamps
+  - soft_deletes
 
 - CampaignResponse (Kampány válasz)
   - id
-  - campaign_id
-  - customer_id
-  - response_type
-  - notes
-  - responded_at
+  - campaign_id (foreign key -> campaigns, cascade on delete)
+  - customer_id (foreign key -> customers, cascade on delete)
+  - response_type (enum: interested/not_interested/callback/no_response, default: no_response)
+  - notes (text, nullable)
+  - responded_at (timestamp, nullable)
   - timestamps
 
 - Opportunity (Értékesítési lehetőség)
   - id
-  - customer_id
+  - customer_id (foreign key -> customers, cascade on delete)
   - title
-  - description
-  - value
-  - probability
-  - stage
-  - expected_close_date
-  - assigned_to
+  - description (text, nullable)
+  - value (decimal 12,2, nullable)
+  - probability (integer, default: 0)
+  - stage (enum via OpportunityStage, default: 'lead')
+  - expected_close_date (date, nullable)
+  - assigned_to (foreign key -> users, nullable, null on delete)
   - timestamps
+  - soft_deletes
 
 - Quote (Ajánlat)
   - id
-  - customer_id
-  - opportunity_id
-  - quote_number
-  - issue_date
-  - valid_until
-  - status
-  - subtotal
-  - discount_amount
-  - tax_amount
-  - total
-  - notes
+  - customer_id (foreign key -> customers, cascade on delete)
+  - opportunity_id (foreign key -> opportunities, nullable, null on delete)
+  - quote_number (unique)
+  - issue_date (date)
+  - valid_until (date)
+  - status (enum: draft/sent/accepted/rejected/expired, default: draft)
+  - subtotal (decimal 12,2, default: 0)
+  - discount_amount (decimal 12,2, default: 0)
+  - tax_amount (decimal 12,2, default: 0)
+  - total (decimal 12,2, default: 0)
+  - notes (text, nullable)
   - timestamps
+  - soft_deletes
 
 - QuoteItem (Ajánlat tétel)
   - id
-  - quote_id
-  - product_id
+  - quote_id (foreign key -> quotes, cascade on delete)
+  - product_id (foreign key -> products, nullable, null on delete)
   - description
-  - quantity
-  - unit_price
-  - discount_percent
-  - discount_amount
-  - tax_rate
-  - total
+  - quantity (decimal 10,2, default: 1)
+  - unit_price (decimal 12,2, default: 0)
+  - discount_percent (decimal 5,2, default: 0)
+  - discount_amount (decimal 12,2, default: 0)
+  - tax_rate (decimal 5,2, default: 0)
+  - total (decimal 12,2, default: 0)
   - timestamps
 ```
 
@@ -121,42 +164,47 @@ Laravel 12 alapú CRM rendszer fejlesztése, amely megfelel a GINOP PLUSZ-1.2.4-
 ```
 - Order (Rendelés)
   - id
-  - customer_id
-  - quote_id
-  - order_number
-  - order_date
-  - status
-  - subtotal
-  - discount_amount
-  - tax_amount
-  - total
+  - customer_id (foreign key -> customers, cascade on delete)
+  - quote_id (foreign key -> quotes, nullable, null on delete)
+  - order_number (unique)
+  - order_date (date)
+  - status (enum via OrderStatus: Pending/Confirmed/Processing/Shipped/Delivered/Cancelled, default: Pending)
+  - subtotal (decimal 12,2, default: 0)
+  - discount_amount (decimal 12,2, default: 0)
+  - tax_amount (decimal 12,2, default: 0)
+  - total (decimal 12,2, default: 0)
+  - notes (text, nullable)
   - timestamps
+  - soft_deletes
 
 - OrderItem (Rendelés tétel)
   - id
-  - order_id
-  - product_id
+  - order_id (foreign key -> orders, cascade on delete)
+  - product_id (foreign key -> products, nullable, null on delete)
   - description
-  - quantity
-  - unit_price
-  - discount_amount
-  - tax_rate
-  - total
+  - quantity (integer, default: 1)
+  - unit_price (decimal 12,2, default: 0)
+  - discount_amount (decimal 12,2, default: 0)
+  - tax_rate (decimal 5,2, default: 0)
+  - total (decimal 12,2, default: 0)
   - timestamps
 
 - Invoice (Számla)
   - id
-  - customer_id
-  - order_id
-  - invoice_number
-  - issue_date
-  - due_date
-  - status
-  - subtotal
-  - discount_amount
-  - tax_amount
-  - total
+  - customer_id (foreign key -> customers, cascade on delete)
+  - order_id (foreign key -> orders, nullable, null on delete)
+  - invoice_number (unique)
+  - issue_date (date)
+  - due_date (date)
+  - status (default: 'draft')
+  - subtotal (decimal 12,2, default: 0)
+  - discount_amount (decimal 12,2, default: 0)
+  - tax_amount (decimal 12,2, default: 0)
+  - total (decimal 12,2, default: 0)
+  - notes (text, nullable)
+  - paid_at (timestamp, nullable)
   - timestamps
+  - soft_deletes
 ```
 
 #### 4. Kedvezmények
@@ -164,69 +212,71 @@ Laravel 12 alapú CRM rendszer fejlesztése, amely megfelel a GINOP PLUSZ-1.2.4-
 - Discount (Kedvezmény)
   - id
   - name
-  - type (quantity/value_threshold/time_based/custom)
-  - value_type (percentage/fixed)
-  - value
-  - min_quantity
-  - min_value
-  - valid_from
-  - valid_until
-  - customer_id (NULL = általános)
-  - product_id (NULL = általános)
-  - is_active
+  - type (enum via DiscountType: Quantity/ValueThreshold/TimeBased/Custom, default: Custom)
+  - value_type (enum via DiscountValueType: Percentage/Fixed, default: Percentage)
+  - value (decimal 12,2, default: 0)
+  - min_quantity (decimal 10,2, nullable)
+  - min_value (decimal 12,2, nullable)
+  - valid_from (date, nullable)
+  - valid_until (date, nullable)
+  - customer_id (foreign key -> customers, nullable, cascade on delete)
+  - product_id (foreign key -> products, nullable, cascade on delete)
+  - is_active (boolean, default: true)
+  - description (text, nullable)
   - timestamps
+  - soft_deletes
 ```
 
 #### 5. Ügyfélkapcsolat kezelés
 ```
 - Interaction (Kapcsolatfelvétel)
   - id
-  - customer_id
-  - user_id
-  - type (call/email/meeting/note)
+  - customer_id (foreign key -> customers, cascade on delete)
+  - user_id (foreign key -> users, cascade on delete)
+  - type (enum: call/email/meeting/note, default: note)
   - subject
-  - description
-  - interaction_date
-  - duration
-  - next_action
-  - next_action_date
+  - description (text, nullable)
+  - interaction_date (timestamp)
+  - duration (integer, nullable) - Duration in minutes
+  - next_action (nullable)
+  - next_action_date (date, nullable)
   - timestamps
 
 - Task (Feladat)
   - id
-  - customer_id
-  - assigned_to
-  - assigned_by
+  - customer_id (foreign key -> customers, nullable, cascade on delete)
+  - assigned_to (foreign key -> users, cascade on delete)
+  - assigned_by (foreign key -> users, cascade on delete)
   - title
-  - description
-  - priority
-  - status
-  - due_date
-  - completed_at
+  - description (text, nullable)
+  - priority (enum: low/medium/high/urgent, default: medium)
+  - status (enum: pending/in_progress/completed/cancelled, default: pending)
+  - due_date (date, nullable)
+  - completed_at (timestamp, nullable)
   - timestamps
 
 - Complaint (Reklamáció)
   - id
-  - customer_id
-  - order_id
-  - reported_by
-  - assigned_to
+  - customer_id (foreign key -> customers, cascade on delete)
+  - order_id (foreign key -> orders, nullable, null on delete)
+  - reported_by (foreign key -> users, cascade on delete)
+  - assigned_to (foreign key -> users, nullable, null on delete)
   - title
-  - description
-  - severity
-  - status
-  - resolution
-  - reported_at
-  - resolved_at
+  - description (text)
+  - severity (enum: low/medium/high/critical, default: medium)
+  - status (enum: open/in_progress/resolved/closed, default: open)
+  - resolution (text, nullable)
+  - reported_at (timestamp)
+  - resolved_at (timestamp, nullable)
   - timestamps
 
 - ComplaintEscalation (Eszkaláció)
   - id
-  - complaint_id
-  - escalated_to
-  - escalated_by
-  - reason
-  - escalated_at
+  - complaint_id (foreign key -> complaints, cascade on delete)
+  - escalated_to (foreign key -> users, cascade on delete)
+  - escalated_by (foreign key -> users, cascade on delete)
+  - reason (text)
+  - escalated_at (timestamp)
   - timestamps
 ```
 
@@ -234,32 +284,32 @@ Laravel 12 alapú CRM rendszer fejlesztése, amely megfelel a GINOP PLUSZ-1.2.4-
 ```
 - Communication (Kommunikáció)
   - id
-  - customer_id
-  - channel (email/sms/chat/social)
-  - direction (inbound/outbound)
-  - subject
-  - content
-  - status
-  - sent_at
-  - delivered_at
-  - read_at
+  - customer_id (foreign key -> customers, nullable, cascade on delete)
+  - channel (enum via CommunicationChannel: Email/Sms/Chat/Social, default: Email)
+  - direction (enum via CommunicationDirection: Inbound/Outbound, default: Outbound)
+  - subject (nullable)
+  - content (text)
+  - status (enum via CommunicationStatus: Pending/Sent/Delivered/Failed/Read, default: Pending)
+  - sent_at (timestamp, nullable)
+  - delivered_at (timestamp, nullable)
+  - read_at (timestamp, nullable)
   - timestamps
 
 - ChatSession (Chat munkamenet)
   - id
-  - customer_id
-  - user_id
-  - started_at
-  - ended_at
-  - status
+  - customer_id (foreign key -> customers, nullable, cascade on delete)
+  - user_id (foreign key -> users, nullable, null on delete)
+  - started_at (timestamp)
+  - ended_at (timestamp, nullable)
+  - status (enum: active/closed/transferred, default: active)
   - timestamps
 
 - ChatMessage (Chat üzenet)
   - id
-  - chat_session_id
-  - sender_type (customer/user/bot)
-  - sender_id
-  - message
+  - chat_session_id (foreign key -> chat_sessions, cascade on delete)
+  - sender_type (enum: customer/user/bot, default: customer)
+  - sender_id (unsigned big integer, nullable)
+  - message (text)
   - timestamps
 ```
 
@@ -268,18 +318,20 @@ Laravel 12 alapú CRM rendszer fejlesztése, amely megfelel a GINOP PLUSZ-1.2.4-
 - Product (Termék)
   - id
   - name
-  - sku
-  - description
-  - category_id
-  - unit_price
-  - tax_rate
-  - is_active
+  - sku (unique)
+  - description (text, nullable)
+  - category_id (foreign key -> product_categories, nullable, null on delete)
+  - unit_price (decimal 12,2, default: 0)
+  - tax_rate (decimal 5,2, default: 0)
+  - is_active (boolean, default: true)
   - timestamps
+  - soft_deletes
 
 - ProductCategory (Termékkategória)
   - id
   - name
-  - parent_id
+  - parent_id (foreign key -> product_categories, nullable, null on delete)
+  - description (text, nullable)
   - timestamps
 ```
 
@@ -287,25 +339,26 @@ Laravel 12 alapú CRM rendszer fejlesztése, amely megfelel a GINOP PLUSZ-1.2.4-
 ```
 - AuditLog (Napló)
   - id
-  - user_id
+  - user_id (foreign key -> users, nullable, null on delete)
   - model_type
-  - model_id
+  - model_id (unsigned big integer)
   - action
-  - old_values (JSON)
-  - new_values (JSON)
-  - ip_address
-  - user_agent
+  - old_values (JSON, nullable)
+  - new_values (JSON, nullable)
+  - ip_address (varchar 45, nullable)
+  - user_agent (text, nullable)
   - timestamps
+  - index: [model_type, model_id]
 
 - BugReport (Hibabejelentés)
   - id
-  - user_id
+  - user_id (foreign key -> users, nullable, null on delete)
   - title
-  - description
-  - severity
-  - status
-  - assigned_to
-  - resolved_at
+  - description (text)
+  - severity (enum: low/medium/high/critical, default: medium)
+  - status (enum: open/in_progress/resolved/closed/rejected, default: open)
+  - assigned_to (foreign key -> users, nullable, null on delete)
+  - resolved_at (timestamp, nullable)
   - timestamps
 
 - Notification (Értesítés)
@@ -317,6 +370,8 @@ Laravel 12 alapú CRM rendszer fejlesztése, amely megfelel a GINOP PLUSZ-1.2.4-
   - data (JSON)
   - read_at
   - timestamps
+
+  Megjegyzés: A Notification tábla nincs még migration-ben definiálva.
 ```
 
 ## Widgets és Dashboard

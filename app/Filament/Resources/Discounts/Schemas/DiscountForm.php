@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Discounts\Schemas;
 
+use App\Enums\DiscountType;
+use App\Enums\DiscountValueType;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -19,12 +21,16 @@ final class DiscountForm
             ->components([
                 TextInput::make('name')
                     ->required(),
-                TextInput::make('type')
+                Select::make('type')
                     ->required()
-                    ->default('custom'),
-                TextInput::make('value_type')
+                    ->default(DiscountType::Custom)
+                    ->enum(DiscountType::class)
+                    ->options(DiscountType::class),
+                Select::make('value_type')
                     ->required()
-                    ->default('percentage'),
+                    ->default(DiscountValueType::Percentage)
+                    ->enum(DiscountValueType::class)
+                    ->options(DiscountValueType::class),
                 TextInput::make('value')
                     ->required()
                     ->numeric()

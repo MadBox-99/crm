@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\DiscountType;
+use App\Enums\DiscountValueType;
 use App\Models\Customer;
 use App\Models\Discount;
 use App\Models\Product;
@@ -21,9 +23,9 @@ final class DiscountFactory extends Factory
      */
     public function definition(): array
     {
-        $type = fake()->randomElement(['quantity', 'value_threshold', 'time_based', 'custom']);
-        $valueType = fake()->randomElement(['percentage', 'fixed']);
-        $value = $valueType === 'percentage' ? fake()->randomFloat(2, 5, 50) : fake()->randomFloat(2, 10, 500);
+        $type = fake()->randomElement(DiscountType::class);
+        $valueType = fake()->randomElement(DiscountValueType::class);
+        $value = $valueType === DiscountValueType::Percentage ? fake()->randomFloat(2, 5, 50) : fake()->randomFloat(2, 10, 500);
 
         $validFrom = fake()->boolean(70) ? fake()->dateTimeBetween('-1 month', '+1 month') : null;
         $validUntil = $validFrom && fake()->boolean(80) ? fake()->dateTimeBetween($validFrom, '+3 months') : null;
@@ -33,8 +35,8 @@ final class DiscountFactory extends Factory
             'type' => $type,
             'value_type' => $valueType,
             'value' => $value,
-            'min_quantity' => $type === 'quantity' ? fake()->randomFloat(2, 1, 100) : null,
-            'min_value' => $type === 'value_threshold' ? fake()->randomFloat(2, 50, 1000) : null,
+            'min_quantity' => $type === DiscountType::Quantity ? fake()->randomFloat(2, 1, 100) : null,
+            'min_value' => $type === DiscountType::ValueThreshold ? fake()->randomFloat(2, 50, 1000) : null,
             'valid_from' => $validFrom,
             'valid_until' => $validUntil,
             'customer_id' => fake()->boolean(30) ? Customer::factory() : null,

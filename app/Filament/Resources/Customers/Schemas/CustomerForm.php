@@ -9,6 +9,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 final class CustomerForm
 {
@@ -17,7 +18,8 @@ final class CustomerForm
         return $schema
             ->components([
                 TextInput::make('unique_identifier')
-                    ->default(uniqid())
+                    ->default(fn (): string => 'CUST-'.Str::upper(Str::random(8)))
+                    ->unique(ignoreRecord: true)
                     ->required(),
                 TextInput::make('name')
                     ->required(),

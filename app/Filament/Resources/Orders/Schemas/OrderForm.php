@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Enums\OrderStatus;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -22,12 +23,14 @@ final class OrderForm
                 Select::make('quote_id')
                     ->relationship('quote', 'id'),
                 TextInput::make('order_number')
+                    ->unique(ignoreRecord: true)
                     ->required(),
                 DatePicker::make('order_date')
                     ->required(),
-                TextInput::make('status')
+                Select::make('status')
                     ->required()
-                    ->default('pending'),
+                    ->default(OrderStatus::Pending->value)
+                    ->options(OrderStatus::class),
                 TextInput::make('subtotal')
                     ->required()
                     ->numeric()

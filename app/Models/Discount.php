@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\DiscountType;
+use App\Enums\DiscountValueType;
 use Database\Factories\DiscountFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -51,6 +53,8 @@ final class Discount extends Model
             'valid_from' => 'date',
             'valid_until' => 'date',
             'is_active' => 'boolean',
+            'type' => DiscountType::class,
+            'value_type' => DiscountValueType::class,
         ];
     }
 }

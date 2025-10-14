@@ -22,8 +22,9 @@ final class InvoiceForm
                     ->relationship('customer', 'name')
                     ->required(),
                 Select::make('order_id')
-                    ->relationship('order', 'id'),
+                    ->relationship('order', 'order_number'),
                 TextInput::make('invoice_number')
+                    ->unique(ignoreRecord: true)
                     ->required(),
                 DatePicker::make('issue_date')
                     ->required(),
@@ -32,6 +33,7 @@ final class InvoiceForm
                 Select::make('status')
                     ->required()
                     ->enum(InvoiceStatus::class)
+                    ->options(InvoiceStatus::class)
                     ->default(InvoiceStatus::Draft),
                 TextInput::make('subtotal')
                     ->required()

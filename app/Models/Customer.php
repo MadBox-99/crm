@@ -86,6 +86,28 @@ final class Customer extends Model
         return $this->hasMany(Communication::class);
     }
 
+    public function discounts(): HasMany
+    {
+        return $this->hasMany(Discount::class);
+    }
+
+    public function getPriceForProduct(int $productId): float
+    {
+        $product = Product::query()->find($productId);
+
+        $discount = $this->discounts()
+            ->where('product_id', $productId)
+            ->where('is_active', true)
+            ->latest()
+            ->first();
+
+        if ($discount) {
+            return (float) ($product->unit_price) - (float) ($discount->price);
+        }
+
+        return (float) ($product->unit_price);
+    }
+
     protected function casts(): array
     {
         return [
