@@ -11,3 +11,6 @@ Route::get('/', fn (): Factory|View => view('welcome'));
 
 // Chat demo route
 Route::get('/chat-demo', [ChatDemoController::class, 'index'])->name('chat.demo');
+
+// Complaint submission route
+Route::get('/complaints/submit', fn (): Factory|View => view('complaint-form'))->name('complaints.submit');

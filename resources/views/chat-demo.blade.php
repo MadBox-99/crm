@@ -14,8 +14,34 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    {{-- Theme initialization script (must be in head to prevent flash) --}}
+    <script>
+        // Apply theme before page renders to prevent flash
+        (function() {
+            const theme = localStorage.getItem('theme') || 'auto';
+            const root = document.documentElement;
+
+            if (theme === 'dark') {
+                root.classList.add('dark');
+            } else if (theme === 'light') {
+                root.classList.remove('dark');
+            } else { // auto
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    root.classList.add('dark');
+                } else {
+                    root.classList.remove('dark');
+                }
+            }
+        })();
+    </script>
 </head>
-<body class="antialiased bg-gray-100">
+<body class="antialiased bg-gray-100 dark:bg-gray-900">
+    {{-- Theme Switcher in top right corner --}}
+    <div class="fixed top-4 right-4 z-50">
+        <x-theme-switcher />
+    </div>
+
     <div class="min-h-screen">
         <!-- Header -->
         <header class="bg-white shadow">

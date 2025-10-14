@@ -1,4 +1,4 @@
-<div class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50" id="chat-messages">
+<div class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50" id="chat-messages" wire:poll.15s="refreshMessages">
     @forelse ($messages as $message)
         <div class="flex {{ $message->sender_type->value === 'customer' ? 'justify-end' : 'justify-start' }}">
             <div class="flex gap-2 max-w-[80%] {{ $message->sender_type->value === 'customer' ? 'flex-row-reverse' : 'flex-row' }}">

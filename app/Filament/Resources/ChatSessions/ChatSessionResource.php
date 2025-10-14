@@ -8,6 +8,7 @@ use App\Enums\NavigationGroup;
 use App\Filament\Resources\ChatSessions\Pages\CreateChatSession;
 use App\Filament\Resources\ChatSessions\Pages\EditChatSession;
 use App\Filament\Resources\ChatSessions\Pages\ListChatSessions;
+use App\Filament\Resources\ChatSessions\Pages\ViewChatSession;
 use App\Filament\Resources\ChatSessions\RelationManagers\MessagesRelationManager;
 use App\Filament\Resources\ChatSessions\Schemas\ChatSessionForm;
 use App\Filament\Resources\ChatSessions\Tables\ChatSessionsTable;
@@ -21,7 +22,15 @@ final class ChatSessionResource extends Resource
 {
     protected static ?string $model = ChatSession::class;
 
-    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::System;
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Support;
+
+    protected static ?string $navigationLabel = 'Chat Sessions';
+
+    protected static ?string $modelLabel = 'Chat Session';
+
+    protected static ?string $pluralModelLabel = 'Chat Sessions';
+
+    protected static ?int $navigationSort = 10;
 
     public static function form(Schema $schema): Schema
     {
@@ -45,7 +54,26 @@ final class ChatSessionResource extends Resource
         return [
             'index' => ListChatSessions::route('/'),
             'create' => CreateChatSession::route('/create'),
+            'view' => ViewChatSession::route('/{record}'),
             'edit' => EditChatSession::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) self::getModel()::query()
+            ->where('status', 'active')
+            ->whereNull('user_id')
+            ->count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $count = self::getModel()::query()
+            ->where('status', 'active')
+            ->whereNull('user_id')
+            ->count();
+
+        return $count > 0 ? 'warning' : 'gray';
     }
 }

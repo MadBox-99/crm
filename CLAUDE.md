@@ -12,6 +12,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - filament/filament (FILAMENT) - v4
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
+- laravel/reverb (REVERB) - v1
 - laravel/sanctum (SANCTUM) - v4
 - livewire/livewire (LIVEWIRE) - v3
 - laravel/mcp (MCP) - v0
@@ -20,6 +21,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - pestphp/pest (PEST) - v4
 - phpunit/phpunit (PHPUNIT) - v12
 - rector/rector (RECTOR) - v2
+- laravel-echo (ECHO) - v2
 - prettier (PRETTIER) - v3
 - tailwindcss (TAILWINDCSS) - v4
 
@@ -113,6 +115,14 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ## Enums
 - That being said, keys in an Enum should follow existing application Enum conventions.
+
+
+=== herd rules ===
+
+## Laravel Herd
+
+- The application is served by Laravel Herd and will be available at: https?://[kebab-case-project-dir].test. Use the `get-absolute-url` tool to generate URLs for the user to ensure valid URLs.
+- You must not run any commands to make the site available via HTTP(s). It is _always_ available through Laravel Herd.
 
 
 === filament/core rules ===
