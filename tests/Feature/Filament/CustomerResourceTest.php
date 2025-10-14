@@ -109,10 +109,10 @@ it('can retrieve customer data for editing', function (): void {
     $customer = Customer::factory()->create();
 
     livewire(EditCustomer::class, ['record' => $customer->id])
-        ->assertFormSet([
+        ->assertSchemaStateSet([
             'unique_identifier' => $customer->unique_identifier,
             'name' => $customer->name,
-            'type' => $customer->type,
+            'type' => $customer->type->value,
             'email' => $customer->email,
             'phone' => $customer->phone,
         ]);

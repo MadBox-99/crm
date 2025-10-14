@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CustomerType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -91,6 +92,11 @@ final class Customer extends Model
         return $this->hasMany(Discount::class);
     }
 
+    public function chatSessions(): HasMany
+    {
+        return $this->hasMany(ChatSession::class);
+    }
+
     public function getPriceForProduct(int $productId): float
     {
         $product = Product::query()->find($productId);
@@ -112,6 +118,7 @@ final class Customer extends Model
     {
         return [
             'is_active' => 'boolean',
+            'type' => CustomerType::class,
         ];
     }
 }

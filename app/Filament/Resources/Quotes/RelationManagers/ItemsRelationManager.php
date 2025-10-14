@@ -147,9 +147,7 @@ final class ItemsRelationManager extends RelationManager
 
         $subtotal = $quote->items->sum('unit_price * quantity');
         $discountAmount = $quote->items->sum('discount_amount');
-        $taxAmount = $quote->items->sum(function (QuoteItem $item) {
-            return ($item->unit_price * $item->quantity - $item->discount_amount) * ($item->tax_rate / 100);
-        });
+        $taxAmount = $quote->items->sum(fn (QuoteItem $item): int|float => ($item->unit_price * $item->quantity - $item->discount_amount) * ($item->tax_rate / 100));
         $total = $subtotal - $discountAmount + $taxAmount;
 
         $quote->update([

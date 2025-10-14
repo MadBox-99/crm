@@ -22,6 +22,11 @@ final class ChatSession extends Model
         'started_at',
         'ended_at',
         'status',
+        'last_message_at',
+        'unread_count',
+        'priority',
+        'rating',
+        'notes',
     ];
 
     public function customer(): BelongsTo
@@ -45,6 +50,8 @@ final class ChatSession extends Model
             'status' => ChatSessionStatus::class,
             'started_at' => 'datetime',
             'ended_at' => 'datetime',
+            'last_message_at' => 'datetime',
+            'unread_count' => 'integer',
         ];
     }
 }

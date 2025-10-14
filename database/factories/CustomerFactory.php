@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\CustomerType;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +20,7 @@ final class CustomerFactory extends Factory
      */
     public function definition(): array
     {
-        $type = fake()->randomElement(['B2B', 'B2C']);
+        $type = fake()->randomElement(CustomerType::class);
 
         return [
             'unique_identifier' => fake()->unique()->numerify('CUST-######'),
@@ -37,7 +38,7 @@ final class CustomerFactory extends Factory
     public function b2b(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => 'B2B',
+            'type' => CustomerType::B2B,
             'name' => fake()->company(),
             'tax_number' => fake()->numerify('########-#-##'),
             'registration_number' => fake()->numerify('##-##-######'),
@@ -47,7 +48,7 @@ final class CustomerFactory extends Factory
     public function b2c(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => 'B2C',
+            'type' => CustomerType::B2C,
             'name' => fake()->name(),
             'tax_number' => null,
             'registration_number' => null,
