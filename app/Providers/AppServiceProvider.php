@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Filament\Commands\FileGenerators\Resources\ResourceClassGenerator;
 use App\Models\Customer;
+use App\Models\Opportunity;
 use App\Models\User;
 use Filament\Commands\FileGenerators\Resources\ResourceClassGenerator as BaseResourceClassGenerator;
 use Filament\Support\Facades\FilamentTimezone;
@@ -32,6 +33,7 @@ final class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'user' => User::class,
             'customer' => Customer::class,
+            'opportunity' => Opportunity::class,
         ]);
     }
 }

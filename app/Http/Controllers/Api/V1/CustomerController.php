@@ -35,7 +35,7 @@ final class CustomerController extends Controller
         $validated = $request->validate([
             'unique_identifier' => ['required', 'string', 'unique:customers'],
             'name' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'in:B2B,B2C'],
+            'type' => ['required', 'in:individual,company'],
             'tax_number' => ['nullable', 'string', 'max:255'],
             'registration_number' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
@@ -63,7 +63,7 @@ final class CustomerController extends Controller
         $validated = $request->validate([
             'unique_identifier' => ['sometimes', 'string', 'unique:customers,unique_identifier,'.$customer->id],
             'name' => ['sometimes', 'string', 'max:255'],
-            'type' => ['sometimes', 'in:B2B,B2C'],
+            'type' => ['sometimes', 'in:individual,company'],
             'tax_number' => ['nullable', 'string', 'max:255'],
             'registration_number' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],

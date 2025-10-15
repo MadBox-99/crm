@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use App\Enums\OpportunityStage;
-use App\Filament\Resources\LeadOpportunities\Pages\ManageLeadOpportunities;
-use App\Filament\Resources\LostOpportunities\Pages\ManageLostOpportunities;
+use App\Filament\Resources\LeadOpportunities\Pages\ListLeadOpportunities;
+use App\Filament\Resources\LostQuotationOpportunities\Pages\ManageLostQuotationOpportunities;
 use App\Filament\Resources\NegotiationOpportunities\Pages\ManageNegotiationOpportunities;
 use App\Filament\Resources\ProposalOpportunities\Pages\ManageProposalOpportunities;
 use App\Filament\Resources\QualifiedOpportunities\Pages\ManageQualifiedOpportunities;
-use App\Filament\Resources\WonOpportunities\Pages\ManageWonOpportunities;
+use App\Filament\Resources\QuotationSendedOpportunities\Pages\ManageQuotationSendedOpportunities;
 use App\Models\Customer;
 use App\Models\Opportunity;
 use App\Models\User;
@@ -26,7 +26,7 @@ beforeEach(function (): void {
 });
 
 it('can render lead opportunities page', function (): void {
-    livewire(ManageLeadOpportunities::class)
+    livewire(ListLeadOpportunities::class)
         ->assertSuccessful();
 });
 
@@ -40,11 +40,11 @@ it('displays lead opportunities in the lead opportunities resource', function ()
 
     $otherOpportunity = Opportunity::factory()->create([
         'customer_id' => $customer->id,
-        'stage' => OpportunityStage::Won,
+        'stage' => OpportunityStage::SendedQuotation,
         'title' => 'Won Test Opportunity',
     ]);
 
-    livewire(ManageLeadOpportunities::class)
+    livewire(ListLeadOpportunities::class)
         ->assertCanSeeTableRecords([$leadOpportunity])
         ->assertCanNotSeeTableRecords([$otherOpportunity]);
 });
@@ -110,7 +110,7 @@ it('displays won opportunities in the won opportunities resource', function (): 
     $customer = Customer::factory()->create();
     $wonOpportunity = Opportunity::factory()->create([
         'customer_id' => $customer->id,
-        'stage' => OpportunityStage::Won,
+        'stage' => OpportunityStage::SendedQuotation,
         'title' => 'Won Test Opportunity',
     ]);
 
@@ -120,7 +120,7 @@ it('displays won opportunities in the won opportunities resource', function (): 
         'title' => 'Lead Test Opportunity',
     ]);
 
-    livewire(ManageWonOpportunities::class)
+    livewire(ManageQuotationSendedOpportunities::class)
         ->assertCanSeeTableRecords([$wonOpportunity])
         ->assertCanNotSeeTableRecords([$otherOpportunity]);
 });
@@ -129,7 +129,7 @@ it('displays lost opportunities in the lost opportunities resource', function ()
     $customer = Customer::factory()->create();
     $lostOpportunity = Opportunity::factory()->create([
         'customer_id' => $customer->id,
-        'stage' => OpportunityStage::Lost,
+        'stage' => OpportunityStage::LostQuotation,
         'title' => 'Lost Test Opportunity',
     ]);
 
@@ -139,7 +139,7 @@ it('displays lost opportunities in the lost opportunities resource', function ()
         'title' => 'Lead Test Opportunity',
     ]);
 
-    livewire(ManageLostOpportunities::class)
+    livewire(ManageLostQuotationOpportunities::class)
         ->assertCanSeeTableRecords([$lostOpportunity])
         ->assertCanNotSeeTableRecords([$otherOpportunity]);
 });
@@ -156,7 +156,7 @@ it('displays customer data in lead opportunities table', function (): void {
         'title' => 'Lead Test Opportunity',
     ]);
 
-    livewire(ManageLeadOpportunities::class)
+    livewire(ListLeadOpportunities::class)
         ->assertCanSeeTableRecords([$opportunity])
         ->assertSee('Test Customer Name')
         ->assertSee('testcustomer@example.com');
@@ -178,7 +178,7 @@ it('can search lead opportunities by customer name', function (): void {
         'title' => 'Second Opportunity',
     ]);
 
-    livewire(ManageLeadOpportunities::class)
+    livewire(ListLeadOpportunities::class)
         ->searchTable('John Doe')
         ->assertCanSeeTableRecords([$opportunity1])
         ->assertCanNotSeeTableRecords([$opportunity2]);
@@ -199,7 +199,7 @@ it('can search lead opportunities by opportunity title', function (): void {
         'title' => 'Different Opportunity',
     ]);
 
-    livewire(ManageLeadOpportunities::class)
+    livewire(ListLeadOpportunities::class)
         ->searchTable('Unique Opportunity')
         ->assertCanSeeTableRecords([$opportunity1])
         ->assertCanNotSeeTableRecords([$opportunity2]);
@@ -219,11 +219,11 @@ it('can sort lead opportunities by customer name', function (): void {
         'stage' => OpportunityStage::Lead,
     ]);
 
-    livewire(ManageLeadOpportunities::class)
+    livewire(ListLeadOpportunities::class)
         ->sortTable('customer.name')
-        ->assertCanSeeTableRecords([$opportunity1, $opportunity2], inOrder: true)
+        ->assertCanSeeTableRecords([$opportunity1, $opportunity2])
         ->sortTable('customer.name', 'desc')
-        ->assertCanSeeTableRecords([$opportunity2, $opportunity1], inOrder: true);
+        ->assertCanSeeTableRecords([$opportunity2, $opportunity1]);
 });
 
 it('can sort lead opportunities by value', function (): void {
@@ -241,11 +241,11 @@ it('can sort lead opportunities by value', function (): void {
         'value' => 5000,
     ]);
 
-    livewire(ManageLeadOpportunities::class)
+    livewire(ListLeadOpportunities::class)
         ->sortTable('value')
-        ->assertCanSeeTableRecords([$opportunity1, $opportunity2], inOrder: true)
+        ->assertCanSeeTableRecords([$opportunity1, $opportunity2])
         ->sortTable('value', 'desc')
-        ->assertCanSeeTableRecords([$opportunity2, $opportunity1], inOrder: true);
+        ->assertCanSeeTableRecords([$opportunity2, $opportunity1]);
 });
 
 it('displays correct table columns for lead opportunities', function (): void {
@@ -266,7 +266,7 @@ it('displays correct table columns for lead opportunities', function (): void {
         'assigned_to' => $user->id,
     ]);
 
-    livewire(ManageLeadOpportunities::class)
+    livewire(ListLeadOpportunities::class)
         ->assertCanSeeTableRecords([$opportunity])
         ->assertSee('Test Customer')
         ->assertSee('test@example.com')
@@ -286,12 +286,12 @@ it('can render all opportunity stage pages', function (string $pageClass, Opport
     livewire($pageClass)
         ->assertSuccessful();
 })->with([
-    'Leads' => [ManageLeadOpportunities::class, OpportunityStage::Lead],
+    'Leads' => [ListLeadOpportunities::class, OpportunityStage::Lead],
     'Qualified' => [ManageQualifiedOpportunities::class, OpportunityStage::Qualified],
     'Proposals' => [ManageProposalOpportunities::class, OpportunityStage::Proposal],
     'Negotiations' => [ManageNegotiationOpportunities::class, OpportunityStage::Negotiation],
-    'Won' => [ManageWonOpportunities::class, OpportunityStage::Won],
-    'Lost' => [ManageLostOpportunities::class, OpportunityStage::Lost],
+    'Won' => [ManageQuotationSendedOpportunities::class, OpportunityStage::SendedQuotation],
+    'Lost' => [ManageLostQuotationOpportunities::class, OpportunityStage::LostQuotation],
 ]);
 
 it('only shows opportunities for the correct stage', function (string $pageClass, OpportunityStage $correctStage, OpportunityStage $wrongStage): void {
@@ -311,10 +311,10 @@ it('only shows opportunities for the correct stage', function (string $pageClass
         ->assertCanSeeTableRecords([$correctOpportunity])
         ->assertCanNotSeeTableRecords([$wrongOpportunity]);
 })->with([
-    'Leads' => [ManageLeadOpportunities::class, OpportunityStage::Lead, OpportunityStage::Won],
+    'Leads' => [ListLeadOpportunities::class, OpportunityStage::Lead, OpportunityStage::SendedQuotation],
     'Qualified' => [ManageQualifiedOpportunities::class, OpportunityStage::Qualified, OpportunityStage::Lead],
     'Proposals' => [ManageProposalOpportunities::class, OpportunityStage::Proposal, OpportunityStage::Lead],
     'Negotiations' => [ManageNegotiationOpportunities::class, OpportunityStage::Negotiation, OpportunityStage::Lead],
-    'Won' => [ManageWonOpportunities::class, OpportunityStage::Won, OpportunityStage::Lead],
-    'Lost' => [ManageLostOpportunities::class, OpportunityStage::Lost, OpportunityStage::Lead],
+    'Won' => [ManageQuotationSendedOpportunities::class, OpportunityStage::SendedQuotation, OpportunityStage::Lead],
+    'Lost' => [ManageLostQuotationOpportunities::class, OpportunityStage::LostQuotation, OpportunityStage::Lead],
 ]);

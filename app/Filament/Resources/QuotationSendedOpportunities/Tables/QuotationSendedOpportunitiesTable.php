@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\LostOpportunities\Tables;
+namespace App\Filament\Resources\QuotationSendedOpportunities\Tables;
 
 use App\Enums\OpportunityStage;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-final class LostOpportunitiesTable
+final class QuotationSendedOpportunitiesTable
 {
     public static function configure(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn ($query) => $query->where('stage', OpportunityStage::Lost))
+            ->modifyQueryUsing(fn ($query) => $query->where('stage', OpportunityStage::SendedQuotation))
             ->columns([
                 TextColumn::make('customer.name')
                     ->label('Customer Name')

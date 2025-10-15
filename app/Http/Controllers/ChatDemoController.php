@@ -21,7 +21,7 @@ final class ChatDemoController extends Controller
                 'name' => 'Demo Customer',
                 'email' => 'demo@example.com',
                 'phone' => '+36 20 123 4567',
-                'type' => CustomerType::B2C,
+                'type' => CustomerType::Individual,
                 'is_active' => true,
             ]
         );

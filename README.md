@@ -5,7 +5,7 @@ A modern, full-featured Customer Relationship Management (CRM) system built with
 ## Features
 
 ### Customer Management
-- **Customer Profiles**: Comprehensive B2B and B2C customer management
+- **Customer Profiles**: Comprehensive Company and B2C customer management
 - **Contact Management**: Multiple contacts per customer
 - **Address Management**: Multiple addresses (billing, shipping, etc.)
 - **Custom Attributes**: Flexible customer attributes system
@@ -194,7 +194,7 @@ Authorization: Bearer YOUR_TOKEN
 
 #### List Customers
 ```bash
-GET /api/v1/customers?page=1&per_page=15&search=acme&type=B2B
+GET /api/v1/customers?page=1&per_page=15&search=acme&type=Company
 Authorization: Bearer YOUR_TOKEN
 ```
 
@@ -207,7 +207,7 @@ Content-Type: application/json
 {
   "unique_identifier": "CUST-001",
   "name": "Acme Corp",
-  "type": "B2B",
+  "type": "Company",
   "email": "contact@acme.com",
   "phone": "+36301234567",
   "tax_number": "12345678-1-23",

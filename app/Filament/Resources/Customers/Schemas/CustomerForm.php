@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Customers\Schemas;
 
+use App\Enums\CustomerType;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -25,11 +26,8 @@ final class CustomerForm
                     ->required(),
                 Select::make('type')
                     ->required()
-                    ->options([
-                        'B2C' => 'B2C',
-                        'B2B' => 'B2B',
-                    ])
-                    ->default('B2C'),
+                    ->options(CustomerType::class)
+                    ->default(CustomerType::Individual),
                 TextInput::make('tax_number'),
                 TextInput::make('registration_number'),
                 TextInput::make('email')

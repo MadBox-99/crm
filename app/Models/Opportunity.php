@@ -51,7 +51,7 @@ final class Opportunity extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logFillable();
+            ->logOnly(['title', 'description', 'value', 'probability', 'stage', 'expected_close_date', 'assigned_to']);
 
     }
 

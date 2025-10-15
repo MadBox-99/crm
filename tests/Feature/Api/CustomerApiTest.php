@@ -50,7 +50,7 @@ it('can create a customer', function (): void {
     $customerData = [
         'unique_identifier' => 'CUST-API-001',
         'name' => 'Test Customer',
-        'type' => CustomerType::B2B->value,
+        'type' => CustomerType::Company->value,
         'email' => 'test@api.com',
         'phone' => '+36301234567',
         'is_active' => true,
@@ -65,7 +65,7 @@ it('can create a customer', function (): void {
             'data' => [
                 'unique_identifier' => 'CUST-API-001',
                 'name' => 'Test Customer',
-                'type' => CustomerType::B2B->value,
+                'type' => CustomerType::Company->value,
             ],
         ]);
 

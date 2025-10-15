@@ -16,7 +16,7 @@ it('can create a customer using factory', function (): void {
 it('can create B2B customer', function (): void {
     $customer = Customer::factory()->b2b()->create();
 
-    expect($customer->type)->toBe(CustomerType::B2B);
+    expect($customer->type)->toBe(CustomerType::Company);
     expect($customer->tax_number)->not->toBeNull();
     expect($customer->registration_number)->not->toBeNull();
 });
@@ -24,7 +24,7 @@ it('can create B2B customer', function (): void {
 it('can create B2C customer', function (): void {
     $customer = Customer::factory()->b2c()->create();
 
-    expect($customer->type)->toBe(CustomerType::B2C);
+    expect($customer->type)->toBe(CustomerType::Individual);
 });
 
 it('can create inactive customer', function (): void {

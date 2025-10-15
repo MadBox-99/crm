@@ -75,7 +75,7 @@ it('can retrieve customer data for editing', function (): void {
         ->assertSchemaStateSet([
             'unique_identifier' => $customer->unique_identifier,
             'name' => $customer->name,
-            'type' => $customer->type->value,
+            'type' => $customer->type,
             'email' => $customer->email,
             'phone' => $customer->phone,
         ]);

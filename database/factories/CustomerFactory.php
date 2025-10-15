@@ -24,10 +24,10 @@ final class CustomerFactory extends Factory
 
         return [
             'unique_identifier' => fake()->unique()->numerify('CUST-######'),
-            'name' => $type === 'B2B' ? fake()->company() : fake()->name(),
+            'name' => $type === CustomerType::Company ? fake()->company() : fake()->name(),
             'type' => $type,
-            'tax_number' => $type === 'B2B' ? fake()->numerify('########-#-##') : null,
-            'registration_number' => $type === 'B2B' ? fake()->numerify('##-##-######') : null,
+            'tax_number' => $type === CustomerType::Company ? fake()->numerify('########-#-##') : null,
+            'registration_number' => $type === CustomerType::Company ? fake()->numerify('##-##-######') : null,
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
             'notes' => fake()->optional()->paragraph(),
@@ -38,7 +38,7 @@ final class CustomerFactory extends Factory
     public function b2b(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => CustomerType::B2B,
+            'type' => CustomerType::Company,
             'name' => fake()->company(),
             'tax_number' => fake()->numerify('########-#-##'),
             'registration_number' => fake()->numerify('##-##-######'),
@@ -48,7 +48,7 @@ final class CustomerFactory extends Factory
     public function b2c(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => CustomerType::B2C,
+            'type' => CustomerType::Individual,
             'name' => fake()->name(),
             'tax_number' => null,
             'registration_number' => null,

@@ -32,10 +32,7 @@ final class LeadOpportunitiesTable
                     ->label('Opportunity Title')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('value')
-                    ->label('Value')
-                    ->money('HUF')
-                    ->sortable(),
+
                 TextColumn::make('probability')
                     ->label('Probability')
                     ->suffix('%')

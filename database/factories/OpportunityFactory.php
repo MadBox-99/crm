@@ -28,8 +28,8 @@ final class OpportunityFactory extends Factory
             OpportunityStage::Qualified => fake()->numberBetween(25, 50),
             OpportunityStage::Proposal => fake()->numberBetween(50, 75),
             OpportunityStage::Negotiation => fake()->numberBetween(75, 90),
-            OpportunityStage::Won => 100,
-            OpportunityStage::Lost => 0,
+            OpportunityStage::SendedQuotation => 100,
+            OpportunityStage::LostQuotation => 0,
         };
 
         return [
