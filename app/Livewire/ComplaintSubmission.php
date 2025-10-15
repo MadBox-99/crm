@@ -12,6 +12,8 @@ use App\Models\Complaint;
 use App\Models\Customer;
 use App\Models\User;
 use App\Notifications\NewComplaintNotification;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -77,12 +79,12 @@ final class ComplaintSubmission extends Component
         $this->reset(['name', 'email', 'phone', 'title', 'description', 'order_number']);
     }
 
-    public function render()
+    public function render(): Factory|View
     {
         return view('livewire.complaint-submission');
     }
 
-    protected function notifyAdmins(Complaint $complaint): void
+    private function notifyAdmins(Complaint $complaint): void
     {
         // Get all users with admin or manager role
         $adminsAndManagers = User::query()

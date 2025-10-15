@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\ChatSessions\Pages;
 
 use App\Filament\Resources\ChatSessions\ChatSessionResource;
+use App\Models\User;
 use App\Services\ChatService;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
@@ -31,9 +32,9 @@ final class ViewChatSession extends ViewRecord
                 ->label('Assign to Me')
                 ->icon('heroicon-o-user-plus')
                 ->color(Color::Blue)
-                ->visible(fn () => $this->record->user_id === null)
+                ->visible(fn (): bool => $this->record->user_id === null)
                 ->requiresConfirmation()
-                ->action(function () {
+                ->action(function (): void {
                     $chatService = app(ChatService::class);
                     $chatService->assignSession($this->record, Auth::user());
 
@@ -48,17 +49,17 @@ final class ViewChatSession extends ViewRecord
                 ->label('Transfer')
                 ->icon('heroicon-o-arrow-path')
                 ->color(Color::Orange)
-                ->visible(fn () => $this->record->user_id !== null && $this->record->status->value === 'active')
+                ->visible(fn (): bool => $this->record->user_id !== null && $this->record->status->value === 'active')
                 ->form([
                     Select::make('new_user_id')
                         ->label('Transfer to Agent')
-                        ->options(\App\Models\User::query()->pluck('name', 'id'))
+                        ->options(User::query()->pluck('name', 'id'))
                         ->searchable()
                         ->required(),
                 ])
-                ->action(function (array $data) {
+                ->action(function (array $data): void {
                     $chatService = app(ChatService::class);
-                    $newUser = \App\Models\User::query()->find($data['new_user_id']);
+                    $newUser = User::query()->find($data['new_user_id']);
                     $chatService->transferSession($this->record, $newUser);
 
                     Notification::make()
@@ -72,10 +73,10 @@ final class ViewChatSession extends ViewRecord
                 ->label('Close Session')
                 ->icon('heroicon-o-x-circle')
                 ->color(Color::Red)
-                ->visible(fn () => $this->record->status->value === 'active')
+                ->visible(fn (): bool => $this->record->status->value === 'active')
                 ->requiresConfirmation()
                 ->modalDescription('Are you sure you want to close this chat session?')
-                ->action(function () {
+                ->action(function (): void {
                     $chatService = app(ChatService::class);
                     $chatService->closeSession($this->record);
 

@@ -59,7 +59,7 @@ final class ChatSessionResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): string
     {
         return (string) self::getModel()::query()
             ->where('status', 'active')
@@ -67,7 +67,7 @@ final class ChatSessionResource extends Resource
             ->count();
     }
 
-    public static function getNavigationBadgeColor(): ?string
+    public static function getNavigationBadgeColor(): string
     {
         $count = self::getModel()::query()
             ->where('status', 'active')

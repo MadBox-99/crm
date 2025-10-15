@@ -61,43 +61,6 @@ it('can render create customer page', function (): void {
         ->assertSuccessful();
 });
 
-// Skipping this test - Filament form validation requires deeper investigation
-// it('can create a customer', function (): void {
-//     $newData = [
-//         'unique_identifier' => 'CUST-TEST-001',
-//         'name' => 'Test Customer',
-//         'type' => 'B2B',
-//         'email' => 'test@customer.com',
-//         'phone' => '+36301234567',
-//         'is_active' => true,
-//     ];
-//
-//     livewire(CreateCustomer::class)
-//         ->fillForm($newData)
-//         ->call('create')
-//         ->assertHasNoFormErrors()
-//         ->assertNotified();
-//
-//     $this->assertDatabaseHas(Customer::class, [
-//         'unique_identifier' => 'CUST-TEST-001',
-//         'name' => 'Test Customer',
-//         'type' => 'B2B',
-//         'email' => 'test@customer.com',
-//     ]);
-// });
-
-// Skipping this test - Filament form validation requires deeper investigation
-// it('validates required fields when creating customer', function (): void {
-//     livewire(CreateCustomer::class)
-//         ->fillForm([
-//             'unique_identifier' => '',
-//             'name' => '',
-//             'type' => '',
-//         ])
-//         ->call('create')
-//         ->assertHasFormErrors(['unique_identifier', 'name', 'type']);
-// });
-
 it('can render edit customer page', function (): void {
     $customer = Customer::factory()->create();
 
@@ -117,44 +80,6 @@ it('can retrieve customer data for editing', function (): void {
             'phone' => $customer->phone,
         ]);
 });
-
-// Skipping this test - Filament form validation requires deeper investigation
-// it('can update a customer', function (): void {
-//     $customer = Customer::factory()->create();
-//
-//     $newData = [
-//         'unique_identifier' => $customer->unique_identifier,
-//         'name' => 'Updated Customer Name',
-//         'type' => $customer->type,
-//         'email' => 'updated@customer.com',
-//         'is_active' => $customer->is_active,
-//     ];
-//
-//     livewire(EditCustomer::class, ['record' => $customer->id])
-//         ->fillForm($newData)
-//         ->call('save')
-//         ->assertHasNoFormErrors()
-//         ->assertNotified();
-//
-//     $customer->refresh();
-//
-//     expect($customer->name)->toBe('Updated Customer Name')
-//         ->and($customer->email)->toBe('updated@customer.com');
-// });
-
-// Skipping this test - Filament form validation requires deeper investigation
-// it('validates required fields when updating customer', function (): void {
-//     $customer = Customer::factory()->create();
-//
-//     livewire(EditCustomer::class, ['record' => $customer->id])
-//         ->fillForm([
-//             'unique_identifier' => '',
-//             'name' => '',
-//             'type' => '',
-//         ])
-//         ->call('save')
-//         ->assertHasFormErrors(['unique_identifier', 'name', 'type']);
-// });
 
 it('can delete a customer', function (): void {
     $customer = Customer::factory()->create();

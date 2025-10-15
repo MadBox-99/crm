@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Customers\RelationManagers;
 
+use App\Enums\QuoteStatus;
+use App\Filament\Resources\Customers\Actions\AcceptQuoteAction;
+use App\Filament\Resources\Customers\Actions\GenerateOrderAction;
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -45,9 +48,11 @@ final class QuotesRelationManager extends RelationManager
                     ->required(),
                 DatePicker::make('valid_until')
                     ->required(),
-                TextInput::make('status')
+                Select::make('status')
+                    ->options(QuoteStatus::class)
+                    ->enum(QuoteStatus::class)
                     ->required()
-                    ->default('draft'),
+                    ->default(QuoteStatus::Draft),
                 TextInput::make('subtotal')
                     ->required()
                     ->numeric()
@@ -119,6 +124,8 @@ final class QuotesRelationManager extends RelationManager
                 AssociateAction::make(),
             ])
             ->recordActions([
+                AcceptQuoteAction::make(),
+                GenerateOrderAction::make(),
                 EditAction::make(),
                 DissociateAction::make(),
                 DeleteAction::make(),

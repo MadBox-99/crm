@@ -40,7 +40,7 @@ final class ChatSessionsTable
                     ->searchable()
                     ->sortable()
                     ->placeholder('Unassigned')
-                    ->color(fn ($state) => $state ? null : Color::Orange),
+                    ->color(fn ($state): ?array => $state ? null : Color::Orange),
                 TextColumn::make('status')
                     ->badge()
                     ->sortable(),
@@ -59,12 +59,12 @@ final class ChatSessionsTable
                     ->numeric()
                     ->sortable()
                     ->badge()
-                    ->color(fn ($state) => $state > 0 ? Color::Red : Color::Gray),
+                    ->color(fn ($state): array => $state > 0 ? Color::Red : Color::Gray),
                 TextColumn::make('rating')
                     ->label('Rating')
                     ->numeric()
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => $state ? $state.'/5 ⭐' : '-')
+                    ->formatStateUsing(fn ($state): string => $state ? $state.'/5 ⭐' : '-')
                     ->toggleable(),
                 TextColumn::make('started_at')
                     ->label('Started')
@@ -141,9 +141,9 @@ final class ChatSessionsTable
                     ->label('Assign to Me')
                     ->icon('heroicon-o-user-plus')
                     ->color(Color::Blue)
-                    ->visible(fn ($record) => $record->user_id === null)
+                    ->visible(fn ($record): bool => $record->user_id === null)
                     ->requiresConfirmation()
-                    ->action(function ($record) {
+                    ->action(function ($record): void {
                         $chatService = app(ChatService::class);
                         $chatService->assignSession($record, Auth::user());
 
@@ -156,7 +156,7 @@ final class ChatSessionsTable
                     ->label('Transfer')
                     ->icon('heroicon-o-arrow-path')
                     ->color(Color::Orange)
-                    ->visible(fn ($record) => $record->user_id !== null && $record->status === ChatSessionStatus::Active)
+                    ->visible(fn ($record): bool => $record->user_id !== null && $record->status === ChatSessionStatus::Active)
                     ->form([
                         Select::make('new_user_id')
                             ->label('Transfer to Agent')
@@ -164,7 +164,7 @@ final class ChatSessionsTable
                             ->searchable()
                             ->required(),
                     ])
-                    ->action(function ($record, array $data) {
+                    ->action(function ($record, array $data): void {
                         $chatService = app(ChatService::class);
                         $newUser = User::query()->find($data['new_user_id']);
                         $chatService->transferSession($record, $newUser);
@@ -178,10 +178,10 @@ final class ChatSessionsTable
                     ->label('Close')
                     ->icon('heroicon-o-x-circle')
                     ->color(Color::Red)
-                    ->visible(fn ($record) => $record->status === ChatSessionStatus::Active)
+                    ->visible(fn ($record): bool => $record->status === ChatSessionStatus::Active)
                     ->requiresConfirmation()
                     ->modalDescription('Are you sure you want to close this chat session?')
-                    ->action(function ($record) {
+                    ->action(function ($record): void {
                         $chatService = app(ChatService::class);
                         $chatService->closeSession($record);
 

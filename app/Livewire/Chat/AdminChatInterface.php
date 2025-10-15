@@ -7,6 +7,8 @@ namespace App\Livewire\Chat;
 use App\Enums\ChatMessageSenderType;
 use App\Models\ChatSession;
 use App\Services\ChatService;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -30,7 +32,7 @@ final class AdminChatInterface extends Component
     {
         $this->validate();
 
-        if (empty(mb_trim($this->message))) {
+        if (in_array(mb_trim($this->message), ['', '0'], true)) {
             return;
         }
 
@@ -74,10 +76,10 @@ final class AdminChatInterface extends Component
 
     public function updatedMessage(): void
     {
-        $this->isTyping = ! empty($this->message);
+        $this->isTyping = $this->message !== '' && $this->message !== '0';
     }
 
-    public function render()
+    public function render(): Factory|View
     {
         return view('livewire.chat.admin-chat-interface');
     }

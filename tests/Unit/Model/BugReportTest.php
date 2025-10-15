@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\BugReportStatus;
+use App\Enums\ComplaintSeverity;
 use App\Models\BugReport;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,8 +25,8 @@ it('has fillable attributes', function (): void {
         'user_id' => $user->id,
         'title' => 'Bug Title',
         'description' => 'Bug Description',
-        'severity' => 'high',
-        'status' => 'open',
+        'severity' => ComplaintSeverity::High,
+        'status' => BugReportStatus::Open,
         'assigned_to' => $assignedUser->id,
         'resolved_at' => null,
     ]);
@@ -32,8 +34,8 @@ it('has fillable attributes', function (): void {
     expect($bugReport->user_id)->toBe($user->id)
         ->and($bugReport->title)->toBe('Bug Title')
         ->and($bugReport->description)->toBe('Bug Description')
-        ->and($bugReport->severity)->toBe('high')
-        ->and($bugReport->status)->toBe('open')
+        ->and($bugReport->severity)->toBe(ComplaintSeverity::High)
+        ->and($bugReport->status)->toBe(BugReportStatus::Open)
         ->and($bugReport->assigned_to)->toBe($assignedUser->id)
         ->and($bugReport->resolved_at)->toBeNull();
 });

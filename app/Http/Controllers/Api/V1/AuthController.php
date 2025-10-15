@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 
 final class AuthController extends Controller
 {
@@ -42,7 +43,7 @@ final class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        /** @var \Laravel\Sanctum\PersonalAccessToken|null $token */
+        /** @var PersonalAccessToken|null $token */
         $token = $request->user()?->currentAccessToken();
 
         if ($token) {

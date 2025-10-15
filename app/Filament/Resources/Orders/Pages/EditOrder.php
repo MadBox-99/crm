@@ -31,7 +31,7 @@ final class EditOrder extends EditRecord
                 ->modalHeading('Generate Invoice from Order')
                 ->modalDescription('This will create a new invoice based on this order data. Are you sure you want to continue?')
                 ->modalSubmitActionLabel('Generate Invoice')
-                ->action(function (Order $record) {
+                ->action(function (Order $record): void {
                     // Check if an invoice already exists for this order
                     if ($record->invoices()->exists()) {
                         Notification::make()
@@ -49,7 +49,7 @@ final class EditOrder extends EditRecord
                         ->orderBy('id', 'desc')
                         ->first();
 
-                    $nextNumber = $lastInvoice ? ((int) mb_substr($lastInvoice->invoice_number, -4)) + 1 : 1;
+                    $nextNumber = $lastInvoice ? ((int) mb_substr((string) $lastInvoice->invoice_number, -4)) + 1 : 1;
                     $invoiceNumber = 'INV-'.now()->year.'-'.mb_str_pad(
                         (string) $nextNumber,
                         4,
@@ -69,13 +69,13 @@ final class EditOrder extends EditRecord
                         'discount_amount' => $record->discount_amount,
                         'tax_amount' => $record->tax_amount,
                         'total' => $record->total,
-                        'notes' => $record->notes ? "Generated from Order #{$record->order_number}\n\n{$record->notes}" : "Generated from Order #{$record->order_number}",
+                        'notes' => $record->notes ? "Generated from Order #{$record->order_number}\n\n{$record->notes}" : 'Generated from Order #'.$record->order_number,
                     ]);
 
                     Notification::make()
                         ->success()
                         ->title('Invoice Generated Successfully')
-                        ->body("Invoice #{$invoice->invoice_number} has been created. Click here to view it.")
+                        ->body(sprintf('Invoice #%s has been created. Click here to view it.', $invoice->invoice_number))
                         ->send();
 
                     // Redirect to the invoice

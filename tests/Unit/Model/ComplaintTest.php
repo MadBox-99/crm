@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\ComplaintSeverity;
+use App\Enums\ComplaintStatus;
 use App\Models\Complaint;
 use App\Models\ComplaintEscalation;
 use App\Models\Customer;
@@ -31,8 +33,8 @@ it('has fillable attributes', function (): void {
         'assigned_to' => $assignedUser->id,
         'title' => 'Test Complaint',
         'description' => 'Test Description',
-        'severity' => 'high',
-        'status' => 'open',
+        'severity' => ComplaintSeverity::High,
+        'status' => ComplaintStatus::Open,
         'resolution' => null,
         'reported_at' => now(),
         'resolved_at' => null,
@@ -44,8 +46,8 @@ it('has fillable attributes', function (): void {
         ->and($complaint->assigned_to)->toBe($assignedUser->id)
         ->and($complaint->title)->toBe('Test Complaint')
         ->and($complaint->description)->toBe('Test Description')
-        ->and($complaint->severity)->toBe('high')
-        ->and($complaint->status)->toBe('open')
+        ->and($complaint->severity)->toBe(ComplaintSeverity::High)
+        ->and($complaint->status)->toBe(ComplaintStatus::Open)
         ->and($complaint->resolution)->toBeNull()
         ->and($complaint->resolved_at)->toBeNull();
 });

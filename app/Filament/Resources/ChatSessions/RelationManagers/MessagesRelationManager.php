@@ -120,7 +120,7 @@ final class MessagesRelationManager extends RelationManager
                     ->icon('heroicon-o-check-circle')
                     ->color(Color::Green)
                     ->requiresConfirmation()
-                    ->action(function (RelationManager $livewire) {
+                    ->action(function (RelationManager $livewire): void {
                         $livewire->getOwnerRecord()
                             ->messages()
                             ->where('is_read', false)
@@ -133,7 +133,7 @@ final class MessagesRelationManager extends RelationManager
                     ->label('Mark Read')
                     ->icon('heroicon-o-check')
                     ->color(Color::Green)
-                    ->visible(fn ($record) => ! $record->is_read)
+                    ->visible(fn ($record): bool => ! $record->is_read)
                     ->action(fn ($record) => $record->update(['is_read' => true, 'read_at' => now()])),
             ])
             ->toolbarActions([

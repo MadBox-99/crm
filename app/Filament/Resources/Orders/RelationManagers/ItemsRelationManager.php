@@ -43,6 +43,7 @@ final class ItemsRelationManager extends RelationManager
                             $set('unit_price', $this->ownerRecord->customer->getPriceForProduct($get('product_id')));
 
                         }
+
                         if ($state && $get('unit_price')) {
                             $set('total', $state * $get('unit_price'));
                         }
