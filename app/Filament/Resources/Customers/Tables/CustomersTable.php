@@ -10,6 +10,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\ImportAction;
 use Filament\Actions\RestoreBulkAction;
@@ -62,7 +63,12 @@ final class CustomersTable
             ])
             ->headerActions([
                 ImportAction::make('Import Customers')->importer(CustomerImporter::class),
-                ExportAction::make('Export Customers')->exporter(CustomerExporter::class)->withFileName('customers.csv'),
+                ExportAction::make('Export Customers')
+                    ->exporter(CustomerExporter::class)
+                    ->formats([
+                        ExportFormat::Xlsx,
+                        ExportFormat::Csv,
+                    ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

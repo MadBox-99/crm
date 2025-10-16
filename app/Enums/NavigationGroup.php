@@ -12,10 +12,10 @@ use Illuminate\Contracts\Support\Htmlable;
 enum NavigationGroup: string implements HasIcon, HasLabel
 {
     case Customers = 'Customers';
+    case Support = 'Support';
     case Sales = 'Sales';
     case Products = 'Products';
     case Marketing = 'Marketing';
-    case Support = 'Support';
     case Communication = 'Communication';
     case Reports = 'Reports';
     case Settings = 'Settings';
@@ -25,10 +25,10 @@ enum NavigationGroup: string implements HasIcon, HasLabel
     {
         return match ($this) {
             self::Customers => __('Customers'),
+            self::Support => __('Support'),
             self::Sales => __('Sales'),
             self::Products => __('Products'),
             self::Marketing => __('Marketing'),
-            self::Support => __('Support'),
             self::Communication => __('Communication'),
             self::Reports => __('Reports'),
             self::Settings => __('Settings'),
@@ -40,10 +40,10 @@ enum NavigationGroup: string implements HasIcon, HasLabel
     {
         return match ($this) {
             self::Customers => 'heroicon-o-user-group',
+            self::Support => 'heroicon-o-lifebuoy',
             self::Sales => 'heroicon-o-currency-dollar',
             self::Products => 'heroicon-o-cube',
             self::Marketing => 'heroicon-o-megaphone',
-            self::Support => 'heroicon-o-lifebuoy',
             self::Communication => 'heroicon-o-chat-bubble-left-right',
             self::Reports => 'heroicon-o-chart-bar',
             self::Settings => 'heroicon-o-cog-6-tooth',
@@ -55,10 +55,10 @@ enum NavigationGroup: string implements HasIcon, HasLabel
     {
         return match ($this) {
             self::Customers => 10,
-            self::Sales => 20,
-            self::Products => 30,
-            self::Marketing => 40,
-            self::Support => 50,
+            self::Support => 20,
+            self::Sales => 30,
+            self::Products => 40,
+            self::Marketing => 50,
             self::Communication => 60,
             self::Reports => 70,
             self::Settings => 80,

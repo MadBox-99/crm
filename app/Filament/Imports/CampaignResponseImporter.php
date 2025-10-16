@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Imports;
 
 use App\Models\CampaignResponse;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
+use Filament\Forms\Components\Checkbox;
 use Illuminate\Support\Number;
 
-class CampaignResponseImporter extends Importer
+final class CampaignResponseImporter extends Importer
 {
     protected static ?string $model = CampaignResponse::class;
 
@@ -32,21 +35,34 @@ class CampaignResponseImporter extends Importer
         ];
     }
 
-    public function resolveRecord(): CampaignResponse
-    {
-        return CampaignResponse::firstOrNew([
-            'id' => $this->data['id'],
-        ]);
-    }
-
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Your campaign response import has completed and ' . Number::format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $body = 'Your campaign response import has completed and '.Number::format($import->successful_rows).' '.str('row')->plural($import->successful_rows).' imported.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . Number::format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';
+            $body .= ' '.Number::format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to import.';
         }
 
         return $body;
+    }
+
+    public static function getOptionsFormComponents(): array
+    {
+        return [
+            Checkbox::make('updateExisting')
+                ->label('Update existing records'),
+        ];
+    }
+
+    public function resolveRecord(): CampaignResponse
+    {
+
+        if ($this->options['updateExisting'] ?? false) {
+            return CampaignResponse::firstOrNew([
+                'id' => $this->data['id'],
+            ]);
+        }
+
+        return new CampaignResponse();
     }
 }
