@@ -7,6 +7,7 @@ namespace App\Filament\Resources\Invoices\Schemas;
 use App\Enums\InvoiceStatus;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -54,6 +55,11 @@ final class InvoiceForm
                 Textarea::make('notes')
                     ->columnSpanFull(),
                 DateTimePicker::make('paid_at'),
+                FileUpload::make('files')
+                    ->directory('invoices')
+                    ->panelLayout('grid')
+                    ->multiple()
+                    ->columnSpanFull(),
             ]);
     }
 }

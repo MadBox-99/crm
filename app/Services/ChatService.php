@@ -29,36 +29,32 @@ final class ChatService
         ]));
     }
 
-    public function sendMessage(
-        ChatSession $session,
-        string $message,
-        ChatMessageSenderType $senderType,
-        int $senderId,
-        ?int $parentMessageId = null
-    ): ChatMessage {
-        return DB::transaction(function () use ($session, $message, $senderType, $senderId, $parentMessageId): ChatMessage {
-            $chatMessage = ChatMessage::query()->create([
-                'chat_session_id' => $session->id,
-                'parent_message_id' => $parentMessageId,
-                'sender_type' => $senderType,
-                'sender_id' => $senderId,
-                'message' => $message,
-                'is_read' => false,
-            ]);
+    public function sendMessage(ChatSession $session, string $message, ChatMessageSenderType $senderType, int $senderId, ?int $parentMessageId = null): ChatMessage
+    {
+        return DB::transaction(
+            function () use ($session, $message, $senderType, $senderId, $parentMessageId): ChatMessage {
+                $chatMessage = ChatMessage::query()->create([
+                    'chat_session_id' => $session->id,
+                    'parent_message_id' => $parentMessageId,
+                    'sender_type' => $senderType,
+                    'sender_id' => $senderId,
+                    'message' => $message,
+                    'is_read' => false,
+                ]);
 
-            // Update session last_message_at and unread_count
-            $session->update([
-                'last_message_at' => now(),
-                'unread_count' => $senderType === ChatMessageSenderType::Customer
-                    ? $session->unread_count + 1
-                    : $session->unread_count,
-            ]);
+                // Update session last_message_at and unread_count
+                $session->update([
+                    'last_message_at' => now(),
+                    'unread_count' => $senderType === ChatMessageSenderType::Customer
+                        ? $session->unread_count + 1
+                        : $session->unread_count,
+                ]);
 
-            // Broadcast event
-            broadcast(new MessageSent($chatMessage))->toOthers();
+                // Broadcast event
+                broadcast(new MessageSent($chatMessage))->toOthers();
 
-            return $chatMessage;
-        });
+                return $chatMessage;
+            });
     }
 
     public function markMessageAsRead(ChatMessage $message): void

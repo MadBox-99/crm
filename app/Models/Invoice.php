@@ -31,6 +31,7 @@ final class Invoice extends Model
         'total',
         'notes',
         'paid_at',
+        'files',
     ];
 
     public function customer(): BelongsTo
@@ -54,6 +55,7 @@ final class Invoice extends Model
             'total' => 'decimal:2',
             'paid_at' => 'datetime',
             'status' => InvoiceStatus::class,
+            'files' => 'array',
         ];
     }
 }

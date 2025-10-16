@@ -8,7 +8,6 @@ use App\Enums\NavigationGroup;
 use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
-use App\Filament\Resources\Users\RelationManagers\AuditLogsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\BugReportsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\ChatSessionsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\InteractionsRelationManager;
@@ -46,7 +45,7 @@ final class UserResource extends Resource
             InteractionsRelationManager::class,
             BugReportsRelationManager::class,
             ChatSessionsRelationManager::class,
-            AuditLogsRelationManager::class,
+
         ];
     }
 

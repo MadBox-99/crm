@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Customers\Tables;
 
+use App\Filament\Exports\CustomerExporter;
+use App\Filament\Imports\CustomerImporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\ImportAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -55,6 +59,10 @@ final class CustomersTable
             ])
             ->recordActions([
                 EditAction::make(),
+            ])
+            ->headerActions([
+                ImportAction::make('Import Customers')->importer(CustomerImporter::class),
+                ExportAction::make('Export Customers')->exporter(CustomerExporter::class)->withFileName('customers.csv'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

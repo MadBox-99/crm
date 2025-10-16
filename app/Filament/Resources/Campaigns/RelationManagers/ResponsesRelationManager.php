@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Campaigns\RelationManagers;
 
 use App\Enums\CampaignResponseType;
+use App\Filament\Imports\CampaignResponseImporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ImportAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -73,6 +75,7 @@ final class ResponsesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                ImportAction::make('Import Responses')->importer(CampaignResponseImporter::class),
                 CreateAction::make(),
             ])
             ->recordActions([

@@ -112,7 +112,7 @@ final class OpportunityImporter extends Importer
     {
         // First, try to find existing customer by any of the identifying fields
         $customer = Customer::query()
-            ->where(function ($query) {
+            ->where(function ($query): void {
                 $query->where('unique_identifier', $this->data['customer_unique_identifier'])
                     ->orWhere('name', $this->data['customer_name'])
                     ->orWhere('email', $this->data['customer_email']);

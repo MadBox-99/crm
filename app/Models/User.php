@@ -57,11 +57,6 @@ final class User extends Authenticatable implements FilamentUser
         return $this->hasMany(ChatSession::class);
     }
 
-    public function auditLogs(): HasMany
-    {
-        return $this->hasMany(AuditLog::class);
-    }
-
     /**
      * Get the attributes that should be cast.
      *

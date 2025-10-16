@@ -134,7 +134,7 @@ The system includes 4 pre-configured roles:
 - Create and update opportunities, quotes
 - View campaigns and products
 - Manage tasks and complaints
-- View audit logs
+- View logs
 
 ### Sales Representative
 - Manage customers and opportunities

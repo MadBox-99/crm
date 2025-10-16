@@ -20,7 +20,7 @@ final class TaskResource extends Resource
 {
     protected static ?string $model = Task::class;
 
-    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Marketing;
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Support;
 
     public static function form(Schema $schema): Schema
     {

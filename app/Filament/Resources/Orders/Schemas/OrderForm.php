@@ -21,7 +21,7 @@ final class OrderForm
                     ->relationship('customer', 'name')
                     ->required(),
                 Select::make('quote_id')
-                    ->relationship('quote', 'id'),
+                    ->relationship('quote', 'quote_number'),
                 TextInput::make('order_number')
                     ->unique(ignoreRecord: true)
                     ->required(),

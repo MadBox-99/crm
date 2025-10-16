@@ -24,7 +24,7 @@ final class QuoteResource extends Resource
 {
     protected static ?string $model = Quote::class;
 
-    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Marketing;
+    protected static string|UnitEnum|null $navigationGroup = NavigationGroup::Sales;
 
     public static function form(Schema $schema): Schema
     {

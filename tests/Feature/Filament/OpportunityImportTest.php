@@ -6,6 +6,7 @@ use App\Filament\Imports\OpportunityImporter;
 use App\Models\Customer;
 use App\Models\Opportunity;
 use App\Models\User;
+use Filament\Actions\Imports\ImportColumn;
 use Spatie\Permission\Models\Permission;
 
 beforeEach(function (): void {
@@ -24,7 +25,7 @@ it('has importer class configured correctly', function (): void {
 
 it('has correct column mappings', function (): void {
     $columns = OpportunityImporter::getColumns();
-    $columnNames = array_map(fn ($column) => $column->getName(), $columns);
+    $columnNames = array_map(fn (ImportColumn $column): string => $column->getName(), $columns);
 
     // Customer fields
     expect($columnNames)->toContain('customer_unique_identifier')
@@ -48,11 +49,11 @@ it('has correct column mappings', function (): void {
 it('has required customer fields configured', function (): void {
     $columns = OpportunityImporter::getColumns();
 
-    $customerUniqueIdColumn = collect($columns)->first(fn ($col) => $col->getName() === 'customer_unique_identifier');
-    $customerNameColumn = collect($columns)->first(fn ($col) => $col->getName() === 'customer_name');
-    $customerTypeColumn = collect($columns)->first(fn ($col) => $col->getName() === 'customer_type');
-    $customerEmailColumn = collect($columns)->first(fn ($col) => $col->getName() === 'customer_email');
-    $sourceColumn = collect($columns)->first(fn ($col) => $col->getName() === 'source');
+    $customerUniqueIdColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'customer_unique_identifier');
+    $customerNameColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'customer_name');
+    $customerTypeColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'customer_type');
+    $customerEmailColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'customer_email');
+    $sourceColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'source');
 
     expect($customerUniqueIdColumn)->not()->toBeNull();
     expect($customerNameColumn)->not()->toBeNull();
@@ -64,9 +65,9 @@ it('has required customer fields configured', function (): void {
 it('has required opportunity fields configured', function (): void {
     $columns = OpportunityImporter::getColumns();
 
-    $titleColumn = collect($columns)->first(fn ($col) => $col->getName() === 'title');
-    $probabilityColumn = collect($columns)->first(fn ($col) => $col->getName() === 'probability');
-    $stageColumn = collect($columns)->first(fn ($col) => $col->getName() === 'stage');
+    $titleColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'title');
+    $probabilityColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'probability');
+    $stageColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'stage');
 
     expect($titleColumn)->not()->toBeNull();
     expect($probabilityColumn)->not()->toBeNull();
@@ -75,7 +76,7 @@ it('has required opportunity fields configured', function (): void {
 
 it('has customer unique identifier column with correct label', function (): void {
     $columns = OpportunityImporter::getColumns();
-    $customerUniqueIdColumn = collect($columns)->first(fn ($col) => $col->getName() === 'customer_unique_identifier');
+    $customerUniqueIdColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'customer_unique_identifier');
 
     expect($customerUniqueIdColumn)->not()->toBeNull();
     expect($customerUniqueIdColumn->getLabel())->toBe('Unique Identifier');
@@ -83,7 +84,7 @@ it('has customer unique identifier column with correct label', function (): void
 
 it('has customer email column with correct label', function (): void {
     $columns = OpportunityImporter::getColumns();
-    $customerEmailColumn = collect($columns)->first(fn ($col) => $col->getName() === 'customer_email');
+    $customerEmailColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'customer_email');
 
     expect($customerEmailColumn)->not()->toBeNull();
     expect($customerEmailColumn->getLabel())->toBe('Email Address');
@@ -91,27 +92,26 @@ it('has customer email column with correct label', function (): void {
 
 it('has probability column configured as numeric', function (): void {
     $columns = OpportunityImporter::getColumns();
-    $probabilityColumn = collect($columns)->first(fn ($col) => $col->getName() === 'probability');
+    $probabilityColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'probability');
 
     expect($probabilityColumn)->not()->toBeNull();
 
     $reflection = new ReflectionClass($probabilityColumn);
     $property = $reflection->getProperty('isNumeric');
-    $property->setAccessible(true);
 
     expect($property->getValue($probabilityColumn))->toBeTrue();
 });
 
 it('has stage column configured with example', function (): void {
     $columns = OpportunityImporter::getColumns();
-    $stageColumn = collect($columns)->first(fn ($col) => $col->getName() === 'stage');
+    $stageColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'stage');
 
     expect($stageColumn)->not()->toBeNull();
 });
 
 it('has assigned_to column configured with correct label', function (): void {
     $columns = OpportunityImporter::getColumns();
-    $assignedToColumn = collect($columns)->first(fn ($col) => $col->getName() === 'assigned_to');
+    $assignedToColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'assigned_to');
 
     expect($assignedToColumn)->not()->toBeNull();
     expect($assignedToColumn->getLabel())->toBe('Assigned User Email');
@@ -120,7 +120,6 @@ it('has assigned_to column configured with correct label', function (): void {
 it('has correct model configured', function (): void {
     $reflection = new ReflectionClass(OpportunityImporter::class);
     $property = $reflection->getProperty('model');
-    $property->setAccessible(true);
 
     $model = $property->getValue();
 
@@ -129,7 +128,7 @@ it('has correct model configured', function (): void {
 
 it('has source column with correct label and validation', function (): void {
     $columns = OpportunityImporter::getColumns();
-    $sourceColumn = collect($columns)->first(fn ($col) => $col->getName() === 'source');
+    $sourceColumn = collect($columns)->first(fn ($col): bool => $col->getName() === 'source');
 
     expect($sourceColumn)->not()->toBeNull();
     expect($sourceColumn->getLabel())->toBe('Source');
