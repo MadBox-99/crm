@@ -27,6 +27,7 @@ it('has fillable attributes', function (): void {
         'description' => 'Bug Description',
         'severity' => ComplaintSeverity::High,
         'status' => BugReportStatus::Open,
+        'source' => 'Unit Test',
         'assigned_to' => $assignedUser->id,
         'resolved_at' => null,
     ]);
@@ -36,6 +37,7 @@ it('has fillable attributes', function (): void {
         ->and($bugReport->description)->toBe('Bug Description')
         ->and($bugReport->severity)->toBe(ComplaintSeverity::High)
         ->and($bugReport->status)->toBe(BugReportStatus::Open)
+        ->and($bugReport->source)->toBe('Unit Test')
         ->and($bugReport->assigned_to)->toBe($assignedUser->id)
         ->and($bugReport->resolved_at)->toBeNull();
 });

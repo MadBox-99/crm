@@ -22,6 +22,7 @@ final class BugReport extends Model
         'description',
         'severity',
         'status',
+        'source',
         'assigned_to',
         'resolved_at',
     ];

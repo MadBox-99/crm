@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Interactions\Schemas;
 
+use App\Enums\InteractionType;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -23,7 +24,8 @@ final class InteractionForm
                 Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
-                TextInput::make('type')
+                Select::make('type')
+                    ->options(InteractionType::class)
                     ->required()
                     ->default('note'),
                 TextInput::make('subject')

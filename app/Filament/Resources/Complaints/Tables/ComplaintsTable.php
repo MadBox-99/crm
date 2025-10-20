@@ -18,12 +18,12 @@ final class ComplaintsTable
             ->columns([
                 TextColumn::make('customer.name')
                     ->searchable(),
-                TextColumn::make('order.id')
+                TextColumn::make('order.order_number')
                     ->searchable(),
-                TextColumn::make('reported_by')
+                TextColumn::make('reporter.name')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('assigned_to')
+                TextColumn::make('assignedUser.name')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('title')

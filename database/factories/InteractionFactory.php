@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\InteractionType;
 use App\Models\Customer;
 use App\Models\Interaction;
 use App\Models\User;
@@ -21,7 +22,7 @@ final class InteractionFactory extends Factory
      */
     public function definition(): array
     {
-        $type = fake()->randomElement(['call', 'email', 'meeting', 'note']);
+        $type = fake()->randomElement(InteractionType::class);
         $interactionDate = fake()->dateTimeBetween('-3 months', 'now');
 
         return [

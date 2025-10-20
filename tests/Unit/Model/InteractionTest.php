@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\InteractionType;
 use App\Models\Customer;
 use App\Models\Interaction;
 use App\Models\User;
@@ -23,7 +24,7 @@ it('has fillable attributes', function (): void {
     $interaction = Interaction::factory()->create([
         'customer_id' => $customer->id,
         'user_id' => $user->id,
-        'type' => 'meeting',
+        'type' => InteractionType::Meeting,
         'subject' => 'Test Meeting',
         'description' => 'Test Description',
         'interaction_date' => now(),
@@ -34,7 +35,7 @@ it('has fillable attributes', function (): void {
 
     expect($interaction->customer_id)->toBe($customer->id)
         ->and($interaction->user_id)->toBe($user->id)
-        ->and($interaction->type)->toBe('meeting')
+        ->and($interaction->type)->toBe(InteractionType::Meeting)
         ->and($interaction->subject)->toBe('Test Meeting')
         ->and($interaction->description)->toBe('Test Description')
         ->and($interaction->duration)->toBe(60)

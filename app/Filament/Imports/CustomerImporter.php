@@ -46,7 +46,7 @@ final class CustomerImporter extends Importer
     {
         $body = 'Your customer import has completed and '.Number::format($import->successful_rows).' '.str('row')->plural($import->successful_rows).' imported.';
 
-        if ($failedRowsCount = $import->getFailedRowsCount()) {
+        if (($failedRowsCount = $import->getFailedRowsCount()) !== 0) {
             $body .= ' '.Number::format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to import.';
         }
 
@@ -65,7 +65,7 @@ final class CustomerImporter extends Importer
     {
 
         if ($this->options['updateExisting'] ?? false) {
-            return Customer::firstOrNew([
+            return Customer::query()->firstOrNew([
                 'unique_identifier' => $this->data['unique_identifier'],
             ]);
         }

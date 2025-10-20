@@ -24,6 +24,8 @@ final class BugReportsTable
                     ->searchable(),
                 TextColumn::make('status')
                     ->searchable(),
+                TextColumn::make('source')
+                    ->searchable(),
                 TextColumn::make('assigned_to')
                     ->numeric()
                     ->sortable(),

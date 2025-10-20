@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\InteractionType;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->enum('type', ['call', 'email', 'meeting', 'note'])->default('note');
+            $table->string('type')->default(InteractionType::Note->value);
             $table->string('subject');
             $table->text('description')->nullable();
             $table->timestamp('interaction_date');

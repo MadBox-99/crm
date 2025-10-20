@@ -35,6 +35,8 @@ final class BugReportForm
                     ->enum(BugReportStatus::class)
                     ->required()
                     ->default(BugReportStatus::Open),
+                TextInput::make('source')
+                    ->nullable(),
                 Select::make('assigned_to')
                     ->relationship('assignedUser', 'name')
                     ->nullable(),

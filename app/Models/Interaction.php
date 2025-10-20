@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\InteractionType;
 use Database\Factories\InteractionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,7 @@ final class Interaction extends Model
             'interaction_date' => 'datetime',
             'next_action_date' => 'date',
             'duration' => 'integer',
+            'type' => InteractionType::class,
         ];
     }
 }

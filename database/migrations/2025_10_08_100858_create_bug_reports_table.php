@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('severity')->default(ComplaintSeverity::Medium->value);
             $table->string('status')->default(BugReportStatus::Open->value);
+            $table->string('source')->nullable();
             $table->foreignIdFor(User::class, 'assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('resolved_at')->nullable();
             $table->timestamps();

@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\CustomerAddress;
 use App\Models\CustomerAttribute;
 use App\Models\CustomerContact;
+use App\Models\Opportunity;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\User;
@@ -53,6 +54,7 @@ final class DatabaseSeeder extends Seeder
             ->has(CustomerAddress::factory()->billing()->default(), 'addresses')
             ->has(CustomerAddress::factory()->shipping(), 'addresses')
             ->has(CustomerAttribute::factory(3), 'attributes')
+            ->has(Opportunity::factory(2), 'opportunities')
             ->create();
         $this->call([
             OrderSeeder::class,

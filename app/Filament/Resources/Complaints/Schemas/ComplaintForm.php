@@ -25,19 +25,22 @@ final class ComplaintForm
                     ->relationship('order', 'order_number'),
                 Select::make('reported_by')
                     ->relationship('reporter', 'name')
-                    ->required(),
+                    ->nullable(),
                 Select::make('assigned_to')
-                    ->relationship('assignedUser', 'name'),
+                    ->relationship('assignedUser', 'name')
+                    ->nullable(),
                 TextInput::make('title')
                     ->required(),
                 Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
                 Select::make('severity')
+                    ->options(ComplaintSeverity::class)
                     ->enum(ComplaintSeverity::class)
                     ->required()
                     ->default(ComplaintSeverity::Medium),
                 Select::make('status')
+                    ->options(ComplaintStatus::class)
                     ->enum(ComplaintStatus::class)
                     ->required()
                     ->default(ComplaintStatus::Open),
