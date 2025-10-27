@@ -22,11 +22,11 @@ return new class extends Migration
             $table->timestamp('started_at');
             $table->timestamp('ended_at')->nullable();
             $table->enum('status', ['active', 'closed', 'transferred'])->default('active');
-            $table->timestamp('last_message_at')->nullable()->after('ended_at');
-            $table->unsignedInteger('unread_count')->default(0)->after('last_message_at');
-            $table->enum('priority', ['low', 'normal', 'high', 'urgent'])->default('normal')->after('status');
-            $table->tinyInteger('rating')->nullable()->after('priority');
-            $table->text('notes')->nullable()->after('rating');
+            $table->timestamp('last_message_at')->nullable();
+            $table->unsignedInteger('unread_count')->default(0);
+            $table->enum('priority', ['low', 'normal', 'high', 'urgent'])->default('normal');
+            $table->tinyInteger('rating')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
