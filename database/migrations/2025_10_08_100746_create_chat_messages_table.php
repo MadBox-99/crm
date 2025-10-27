@@ -20,10 +20,10 @@ return new class extends Migration
             $table->enum('sender_type', ['customer', 'user', 'bot'])->default('customer');
             $table->unsignedBigInteger('sender_id')->nullable();
             $table->text('message');
-            $table->boolean('is_read')->default(false)->after('message');
-            $table->timestamp('read_at')->nullable()->after('is_read');
-            $table->unsignedBigInteger('parent_message_id')->nullable()->after('chat_session_id');
-            $table->timestamp('edited_at')->nullable()->after('read_at');
+            $table->boolean('is_read')->default(false);
+            $table->timestamp('read_at')->nullable();
+            $table->unsignedBigInteger('parent_message_id')->nullable();
+            $table->timestamp('edited_at')->nullable();
             $table->softDeletes();
 
             $table->foreign('parent_message_id')
