@@ -239,8 +239,8 @@ php artisan queue:work --verbose
 
 ## 📚 Hasznos Linkek
 
-- [Laravel Reverb Docs](https://laravel.com/docs/11.x/reverb)
-- [Laravel Echo Docs](https://laravel.com/docs/11.x/broadcasting#client-side-installation)
+- [Laravel Reverb Docs](https://laravel.com/docs/12.x/reverb)
+- [Laravel Echo Docs](https://laravel.com/docs/12.x/broadcasting#client-side-installation)
 - [Livewire Docs](https://livewire.laravel.com/docs)
 - [Filament Docs](https://filamentphp.com/docs)
 - [PlantUML Diagrams](diagrams/chat-flow-diagram.puml)
