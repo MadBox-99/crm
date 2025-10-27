@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('is_online')->default(false)->after('remember_token');
-            $table->timestamp('last_seen_at')->nullable()->after('is_online');
+            $table->boolean('is_online')->default(false);
+            $table->timestamp('last_seen_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
